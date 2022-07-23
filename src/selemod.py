@@ -558,11 +558,11 @@ class Logger:
 
 class Encoder:
 
-    def __init__(self, pin_A, pin_B, pin_signal, diameter, resolution, goal):
+    def __init__(self, pin_A, pin_B, diameter, resolution, goal):
 
         self.pin_A = pin_A
         self.pin_B = pin_B
-        self.pin_signal = pin_signal
+        #self.pin_signal = pin_signal
         self.count = 0
         self.precount = 0
         self.sign = 0
@@ -575,7 +575,7 @@ class Encoder:
         gpio.setmode(gpio.BCM)
         gpio.setup(self.pin_A, gpio.IN, pull_up_down=gpio.PUD_UP)
         gpio.setup(self.pin_B, gpio.IN, pull_up_down=gpio.PUD_UP)
-        gpio.setup(self.pin_signal, gpio.OUT, initial=gpio.LOW)
+        #gpio.setup(self.pin_signal, gpio.OUT, initial=gpio.LOW)
 
         dt = datetime.datetime.now()
         file_name = "encLog_" + str(dt.year) + "." + str(dt.month) + "." + str(dt.day + 4) + "_" + str(dt.hour + 20) + "." + str(dt.minute) + ".csv"
@@ -635,14 +635,14 @@ class Encoder:
                 num = 0
 
             # output signal
-            if (sig == 0) and (self.count >= self.lim_pul):
-                gpio.output(self.pin_signal, gpio.HIGH)
-                sig == 1
-                goal_time = time() - initial_time
+            #if (sig == 0) and (self.count >= self.lim_pul):
+                #gpio.output(self.pin_signal, gpio.HIGH)
+                #sig == 1
+                #goal_time = time() - initial_time
 
             # stop signal
-            if (sig == 1) and (time() - initial_time > goal_time + 3.0):
-                gpio.output(self.pin_signal, gpio.LOW)
+            #if (sig == 1) and (time() - initial_time > goal_time + 3.0):
+                #gpio.output(self.pin_signal, gpio.LOW)
 
             if time() - initial_time > 30 * 60:
                 break

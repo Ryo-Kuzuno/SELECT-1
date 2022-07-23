@@ -1,4 +1,5 @@
 import sys
+from tkinter import dialog
 sys.path.append('../')
 from selemod import Encoder
 from time import sleep, time
@@ -13,13 +14,18 @@ import datetime
 
 gpio.setmode(gpio.BCM)
 
-pin_A = 15
-pin_B = 16
+pin_A = 22
+pin_B = 23
 count = 0
 precount = 0
 sign = 0
 lastB = 0
 currentB = 0
+
+goal=1
+diameter=2
+resolution=1
+
 lim_rot = int(goal / (math.pi * diameter) * 1000)    # diameter[mm]
 lim_pul = lim_rot * resolution
 
