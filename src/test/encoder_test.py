@@ -38,7 +38,7 @@ gpio.setup(pin_B, gpio.IN, pull_up_down=gpio.PUD_UP)
 #gpio.setup(pin_signal, gpio.OUT, initial=gpio.LOW)
 
 dt = datetime.datetime.now()
-file_name = "encLog_" + str(dt.year) + "." + str(dt.month) + "." + str(dt.day + 4) + "_" + str(dt.hour + 20) + "." + str(dt.minute) + ".csv"
+file_name = "log/encLog_" + str(dt.year) + "." + str(dt.month) + "." + str(dt.day + 4) + "_" + str(dt.hour + 20) + "." + str(dt.minute) + ".csv"
 f = open(file_name, "a")
 writer = csv.writer(f, lineterminator="\n")
 

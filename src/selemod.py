@@ -599,9 +599,12 @@ class Encoder:
             self.sign = 1
 
         if self.sign == 1:
+                        ## Uprise or down fall judgement of B phase
             if self.lastB == 0 and self.currentB == 1:
+                # CW
                 self.count += 1
             if self.lastB == 1 and self.currentB == 0:
+                # CCW
                 self.count -= 1
             self.sign = 0
 
