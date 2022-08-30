@@ -28,7 +28,7 @@ class LS7366R():
     #   0x01: x1 quadrature count mode (one count per quadrature cycle).
     #   0x02: x2 quadrature count mode (two counts per quadrature cycle).
     #   0x03: x4 quadrature count mode (four counts per quadrature cycle).
-    FOURX_COUNT = 0x00
+    FOURX_COUNT = 0x01
 
     #   Count Byte Modes
     FOURBYTE_COUNTER  = 0x00	# counts from 0 to 4,294,967,295

@@ -13,6 +13,8 @@ radius  = diameter/2
 count   = 0
 pos     = 0
 
+encCounter.load_counter(0)
+
 while True: 
     try:
         count = encCounter.read_counter()
