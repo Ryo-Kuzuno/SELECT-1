@@ -57,7 +57,7 @@ class LS7366R():
         self.clear_status()
         self.spi.xfer2([self.WRITE_MODE0, self.FOURX_COUNT])
         sleep(.1) #Rest
-        self.spi.xfer2([self.WRITE_MODE1, self.BYTE_MODE[self.byte_mode-1],0b11000000])
+        self.spi.xfer2([self.WRITE_MODE1, self.BYTE_MODE[self.byte_mode-1]])
 
     def close(self):
         self.spi.close()
