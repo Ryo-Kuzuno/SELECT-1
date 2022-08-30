@@ -2,6 +2,7 @@
 import struct
 import spidev
 from time import sleep
+from functools import reduce
 
 class LS7366R():
 
@@ -56,7 +57,7 @@ class LS7366R():
         self.clear_status()
         self.spi.xfer2([self.WRITE_MODE0, self.FOURX_COUNT])
         sleep(.1) #Rest
-        self.spi.xfer2([self.WRITE_MODE1, self.BYTE_MODE[self.byte_mode-1]] | 0b11000000)
+        self.spi.xfer2([self.WRITE_MODE1, self.BYTE_MODE[self.byte_mode-1],0b11000000])
 
     def close(self):
         self.spi.close()
@@ -82,7 +83,7 @@ class LS7366R():
         return data[1]
 
     def set_count_mode(self, mode): # mode : 0~3. Count Operating Modesを参照
-        self.spi.xfer2([self.WRITE_MODE0, (self.spi.xfer2([self.READ_MODE0])[1] & ~0b11) | self.FOURX_COUNT])
+        self.spi.xfer2([self.WRITE_MODE0, (self.spi.xfer2([self.READ_MODE0])[1] & ~0b11) , self.FOURX_COUNT])
 
     def get_overflow(self): # Counterの値がcarryやborrowを起こしていないか監視する。こまめに実行して監視しても見逃すことが考えられるため、Counterの値の変動から推測するほうがよいかも。
         status = encoder.read_status()

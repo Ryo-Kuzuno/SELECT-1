@@ -8,12 +8,16 @@ import RPi.GPIO as gpio
 
 
 ls7366r = LS7366R(0, 4) #spi ce0 & byte mode=4
+diameter=2      # [mm]
+radius  = diameter/2
+count   = 0
+pos     = 0
 
 while True: 
     try:
-        ls7366r.count = ls7366r.ls7366r.read_counter()
-        ls7366r.pos = 2 * math.pi * ls7366r.RADIUS * ls7366r.count
-        print("count: {}    position{}m\n".format(ls7366r.count, ls7366r.pos))
+        count = ls7366r.read_counter()
+        pos = 2 * math.pi * radius * count
+        print("count: {}    position{}m\n".format(count, pos))
 
         sleep(1)
 
