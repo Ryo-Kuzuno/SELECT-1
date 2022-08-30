@@ -50,7 +50,7 @@ class LS7366R():
 
         self.spi = spidev.SpiDev()
         self.spi.open(0, cs_line) # Which CS line will be used
-        self.spi.max_speed_hz = 1000000 #Speed of clk (modifies speed transaction)
+        self.spi.max_speed_hz = 1e6 #Speed of clk (modifies speed transaction)
 
         #Init the Encoder
         self.clear_counter()
