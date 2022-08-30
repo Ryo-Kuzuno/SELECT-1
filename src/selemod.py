@@ -642,14 +642,14 @@ class Encoder:
                 num = 0
 
             # output signal
-            if (sig == 0) and (self.count >= self.limit_pulse):
-                gpio.output(self.pin_signal, gpio.HIGH)
-                sig == 1
-                goal_time = time() - initial_time
+            #if (sig == 0) and (self.count >= self.limit_pulse):
+            #    gpio.output(self.pin_signal, gpio.HIGH)
+            #    sig == 1
+            #    goal_time = time() - initial_time
 
             # stop signal
-            if (sig == 1) and (time() - initial_time > goal_time + 3.0):
-                gpio.output(self.pin_signal, gpio.LOW)
+            #if (sig == 1) and (time() - initial_time > goal_time + 3.0):
+            #    gpio.output(self.pin_signal, gpio.LOW)
 
             if time() - initial_time > 30 * 60:
                 break
