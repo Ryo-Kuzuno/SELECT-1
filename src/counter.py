@@ -1,3 +1,4 @@
+## Counter IC used for rptary encoder
 import struct
 import spidev
 from time import sleep
@@ -74,7 +75,7 @@ class LS7366R():
     def read_counter(self): # Counterの値を取得
         data = [self.READ_COUNTER] + [0] * self.byte_mode   # 2 Byte以降は転送において意味がない(ランダムな値)。それを良いことに変数を受信に利用するため5 Byte分確保。
         data = self.spi.xfer2(data)
-        return reduce(lambda a,b: (a<<8) + b, data[1:], 0)  # 1byte*４の配列unsigend intに変換
+        return reduce(lambda a,b: (a<<8) + b, data[1:], 0)  # 1byte*4 の配列unsigend intに変換
 
     def read_status(self):  # status(Counterの値のOverflowとか)の情報を取得
         data = self.spi.xfer2([self.READ_STATUS, 0xFF])

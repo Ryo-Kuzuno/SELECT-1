@@ -568,17 +568,25 @@ class Encoder:
         self.sign = 0
         self.lastB = 0
         self.currentB = 0
-        lim_rot = int(goal / (math.pi * diameter) * 1000)    # diameter[mm]
-        self.lim_pul = lim_rot * resolution
+        limit_rotation = int(goal * 1000 / (math.pi * diameter))    # diameter[mm]
+        self.limit_pulse = limit_rotation * resolution
 
         gpio.setwarnings(False)
         gpio.setmode(gpio.BCM)
         gpio.setup(self.pin_A, gpio.IN, pull_up_down=gpio.PUD_UP)
         gpio.setup(self.pin_B, gpio.IN, pull_up_down=gpio.PUD_UP)
         #gpio.setup(self.pin_signal, gpio.OUT, initial=gpio.LOW)
+        
+        self.set_logfile()
 
+        sleep(0.5)
+        print(">> encoder setup is done.")
+        print(">> limit_rotation:%d, limit_pulse = %d" % (limit_rotation, self.limit_pulse))
+    
+    def set_logfile(self):
         dt = datetime.datetime.now()
-        file_name = "encLog_" + str(dt.year) + "." + str(dt.month) + "." + str(dt.day + 4) + "_" + str(dt.hour + 20) + "." + str(dt.minute) + ".csv"
+        location = "log"
+        file_name = location + "encLog_" + str(dt.year) + "." + str(dt.month) + "." + str(dt.day + 4) + "_" + str(dt.hour + 20) + "." + str(dt.minute) + ".csv"
         self.f = open(file_name, "a")
         self.writer = csv.writer(self.f, lineterminator="\n")
 
@@ -586,10 +594,6 @@ class Encoder:
         self.log = [[0.0, 0]]
         for i in range(19999):
             self.log.append([0.0, 0])
-
-        sleep(0.5)
-        print(">> setup of encoder is done.")
-        print(">> lim_rot:%d, lim_pul = %d" % (lim_rot, self.lim_pul))
 
     def deal(self):
         self.lastB = gpio.input(self.pin_B)
@@ -599,7 +603,7 @@ class Encoder:
             self.sign = 1
 
         if self.sign == 1:
-                        ## Uprise or down fall judgement of B phase
+            ## Uprise or down fall judgement of B phase
             if self.lastB == 0 and self.currentB == 1:
                 # CW
                 self.count += 1
@@ -638,14 +642,14 @@ class Encoder:
                 num = 0
 
             # output signal
-            #if (sig == 0) and (self.count >= self.lim_pul):
-                #gpio.output(self.pin_signal, gpio.HIGH)
-                #sig == 1
-                #goal_time = time() - initial_time
+            if (sig == 0) and (self.count >= self.limit_pulse):
+                gpio.output(self.pin_signal, gpio.HIGH)
+                sig == 1
+                goal_time = time() - initial_time
 
             # stop signal
-            #if (sig == 1) and (time() - initial_time > goal_time + 3.0):
-                #gpio.output(self.pin_signal, gpio.LOW)
+            if (sig == 1) and (time() - initial_time > goal_time + 3.0):
+                gpio.output(self.pin_signal, gpio.LOW)
 
             if time() - initial_time > 30 * 60:
                 break
