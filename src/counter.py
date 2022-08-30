@@ -1,4 +1,4 @@
-## Counter IC used for rptary encoder
+## Counter IC used for rotary encoder
 import struct
 import spidev
 from time import sleep
