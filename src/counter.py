@@ -6,6 +6,7 @@ from functools import reduce
 
 class LS7366R():
 
+    # 0x means hexiadesimal
     CLEAR_MODE0   = 0x08
     CLEAR_MODE1   = 0x10
     CLEAR_COUNTER = 0x20
@@ -57,7 +58,7 @@ class LS7366R():
         self.clear_status()
         self.spi.xfer2([self.WRITE_MODE0, self.FOURX_COUNT])
         sleep(.1) #Rest
-        self.spi.xfer2([self.WRITE_MODE1, self.BYTE_MODE[self.byte_mode-1]])
+        self.spi.xfer2([self.WRITE_MODE1, self.BYTE_MODE[self.byte_mode-1],0b11000000])
 
     def close(self):
         self.spi.close()

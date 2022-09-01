@@ -20,7 +20,7 @@ while True:
         print("count: {}    position{}m\n".format(count, pos))
         
 
-        sleep(1)
+        sleep(0.001)
 
     except KeyboardInterrupt:
          print("Operation was killed!")
