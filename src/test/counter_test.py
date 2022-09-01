@@ -12,6 +12,9 @@ diameter= 2e-3      # [mm]
 radius  = diameter/2
 count   = 0
 pos     = 0
+enc_val = 0
+
+encCounter.load_counter(enc_val)
 
 while True: 
     try:
