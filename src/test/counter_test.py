@@ -14,12 +14,11 @@ enc_val = 0
 
 while True: 
     try:
-        count = encCounter.read_counter()
+        count = encCounter.readCounter()
         pos = 2 * math.pi * radius * count
         print("count: {}    position{}m\n".format(count, pos))
-        
 
-        sleep(0.001)
+        sleep(0.1)
 
     except KeyboardInterrupt:
          print("Operation was killed!")
