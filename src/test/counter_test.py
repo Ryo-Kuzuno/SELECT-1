@@ -1,20 +1,16 @@
 import sys
-from tkinter import dialog
 sys.path.append('../')
-from counter import LS7366R
 from time import sleep, time
+import spidev 
+from selemod import LS7366R
 import math
-import RPi.GPIO as gpio
 
-
-encCounter = LS7366R(0, 4) #spi ce0 & byte mode=4
+encCounter = LS7366R(0, 1000000, 4)
 diameter= 2e-3      # [mm]
 radius  = diameter/2
 count   = 0
 pos     = 0
 enc_val = 0
-
-encCounter.load_counter(enc_val)
 
 while True: 
     try:
