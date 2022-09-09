@@ -6,9 +6,8 @@ import time
 from math import pi 
 
 import selemod 
-from selemod import Actuator, Bme280, Sht31, E2S, Encoder
+from selemod import Actuator, Bme280, Sht31, E2S, Encoder, LS7366R
 from EM_switch import EM_SW
-from counter import LS7366R
 
 import threading # if unable to import, use "pip3 install thread6 in terminal"
 
