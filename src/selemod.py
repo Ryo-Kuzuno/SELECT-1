@@ -302,7 +302,6 @@ class Actuator:
         self.ser_1.ChangeDutyCycle(self.brakeoff_duty)
         #self.ser_2.ChangeDutyCycle(self.brakeoff_duty)
         print("Brake off")
-        sleep(2)
 
     def check_brake(self):
         while True:
