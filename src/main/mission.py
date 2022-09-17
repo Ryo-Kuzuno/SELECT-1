@@ -217,7 +217,7 @@ class Resilience:
     def _encoder(self): 
         '''based on encoder count value, compute climber's position'''
         while True: 
-            self.count = self.ls7366r.read_counter()
+            self.count = self.ls7366r.readCounter()
             self.pos = 2 * pi * self.RADIUS * self.count
             print("count: {}    position{}m\n".format(self.count, self.pos))
 
