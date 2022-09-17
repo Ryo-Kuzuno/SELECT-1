@@ -73,7 +73,7 @@ class Resilience:
         if self.sht_is_use: 
             self.sht31 = Sht31(0x45) #sht31 sensor
         if self.counter_is_use: 
-            self.ls7366r = LS7366R(0, 4) #spi ce0 & byte mode=4
+            self.ls7366r = LS7366RR(0, 1000000, 4) #spi ce0 & byte mode=4
 
 
         # encoder pin setup & count, pos
