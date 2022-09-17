@@ -72,8 +72,8 @@ class Resilience:
             self.bme280 = Bme280(0x76) #bme280 sensor
         if self.sht_is_use: 
             self.sht31 = Sht31(0x45) #sht31 sensor
-        #if self.counter_is_use: 
-        #    self.ls7366r = LS7366R(0, 4) #spi ce0 & byte mode=4
+        if self.counter_is_use: 
+            self.ls7366r = LS7366R(0, 4) #spi ce0 & byte mode=4
 
 
         # encoder pin setup & count, pos
@@ -142,8 +142,9 @@ class Resilience:
                 print("top e2s ON")
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
                 print("turning off actuator")
-                self.actu.brakeoff()
                 self.actu.stop_esc(self.current_throttle)
+                self.actu.brakeoff()
+                self.actu.check_brake()
                 gpio.cleanup()
                 sys.exit()
                 #self.mode = 1                  #for retarding
@@ -157,6 +158,7 @@ class Resilience:
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
                 print("turning off actuator")
                 self.actu.brakeoff()
+                self.actu.check_brake()
                 gpio.cleanup()
                 sys.exit()
                 #self.mode = 1
@@ -171,6 +173,7 @@ class Resilience:
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
                 print("turning off actuator")
                 self.actu.brakeoff()
+                self.actu.check_brake()
                 gpio.cleanup()
                 sys.exit()
             else: 
@@ -240,7 +243,7 @@ class Resilience:
             try: 
                 em_flag = self._em_sw()
                 e2s_flag = self._e2s()
-                #self._encoder()
+                self._encoder()
                 self.motor(e2s_flag, em_flag)
             except KeyboardInterrupt: 
                 print("Aborting the sequence")
