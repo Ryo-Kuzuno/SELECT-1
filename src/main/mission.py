@@ -243,8 +243,8 @@ class Resilience:
             try: 
                 em_flag = self._em_sw()
                 e2s_flag = self._e2s()
-                self._encoder()
                 self.motor(e2s_flag, em_flag)
+                self._encoder()
             except KeyboardInterrupt: 
                 print("Aborting the sequence")
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
