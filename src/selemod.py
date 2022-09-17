@@ -38,7 +38,7 @@ class Actuator:
         self.constup_throttle = constup_throttle
         self.brakeon_duty = brakeon_duty
         self.brakeoff_duty = brakeoff_duty
-        self.decrease_rate = 0.2
+        self.decrease_rate = 0.1
 
         self.max_pulsewidth = 1970
         self.min_pulsewidth = 1030
@@ -167,7 +167,7 @@ class Actuator:
             print("Duty:", duty)
             self.esc.ChangeDutyCycle(duty)
             # sleep(1)
-            sleep(.3)
+            sleep(.01)
         print("Motor stop")
 
 
@@ -251,7 +251,7 @@ class Actuator:
         print("duty:", duty)
         # while motion flag is True, keep motor on 
         self.esc.ChangeDutyCycle(duty)
-        sleep(1)
+        sleep(0.1)
         # self.stop_esc(duty)
 
     def new_duty(self, duty:float):
@@ -293,7 +293,7 @@ class Actuator:
         self.ser_1.ChangeDutyCycle(self.brakeon_duty)
         #self.ser_2.ChangeDutyCycle(self.brakeon_duty)
         print("Brake on")
-        sleep(2)
+        sleep(.1)
 
     def brakeoff(self):
         """

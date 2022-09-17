@@ -5,7 +5,6 @@
 import sys 
 sys.path.append('../main')
 from main import selemod 
-import test_ec2 
 
 # instantiate actuator class 
 pin_esc = 18
