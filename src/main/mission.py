@@ -152,11 +152,11 @@ class Resilience:
                 pass 
             
             if e2s_1_flag==1: 
+                self.actu.stop_esc(self.current_throttle)
                 print("bottom e2s ON")
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
                 print("turning off actuator")
                 self.actu.brakeoff()
-                self.actu.stop_esc(self.current_throttle)
                 gpio.cleanup()
                 sys.exit()
                 #self.mode = 1
@@ -166,11 +166,11 @@ class Resilience:
 
             # Emergency switch stop 
             if em_flag == 1: 
+                self.actu.stop_esc(self.current_throttle)
                 print("emergency switch ON")
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
                 print("turning off actuator")
                 self.actu.brakeoff()
-                self.actu.stop_esc(self.current_throttle)
                 gpio.cleanup()
                 sys.exit()
             else: 
