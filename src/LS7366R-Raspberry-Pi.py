@@ -130,4 +130,4 @@ if __name__ == "__main__":
             sleep(0.5)
     except KeyboardInterrupt:
         encoder.close()
-        print("All done, bye bois.")
+        print("All done, bye bye.")
