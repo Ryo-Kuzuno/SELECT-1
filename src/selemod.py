@@ -788,3 +788,30 @@ class E2S:
     def destroy(self): 
         gpio.cleanup()
 
+class TWILITE_REMOTE:
+    def __init__(self, pin_remote_actuate, pin_remote_stop): 
+        """
+        Argument
+        ------------------------------------------
+        pin_remote_actuate_ : twilite signal for acutuating
+        pin_remote_stop : twilite signal for stop 
+        """
+        gpio.setwarnings(False)
+        gpio.setmode(gpio.BCM)
+
+        self.pin_remote_actuate = pin_remote_actuate
+        self.pin_remote_stop = pin_remote_stop 
+        gpio.setup(pin_remote_actuate, gpio.IN, pull_up_down=gpio.PUD_DOWN)
+        gpio.setup(pin_remote_stop, gpio.IN, pull_up_down=gpio.PUD_DOWN)
+    
+    def read_actuate(self): 
+        actuate_signal = gpio.input(self.pin_remote_actuate)
+        return actuate_signal 
+
+    def read_stop(self): 
+        stop_signal = gpio.input(self.pin_remote_stop)
+        return stop_signal 
+
+    def destroy(self): 
+        gpio.cleanup()
+
