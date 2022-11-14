@@ -86,14 +86,16 @@ class Resilience:
         self.mode = 0 
         
         #calibration setup 
-        print('calibrated esc "y" or "n"')
-        inp = input()
-        if inp == "y":
-            self.actu.set_min_throttle()
-
-            pass 
-        elif inp == "n": 
-            self.actu.calibrate_esc() #calibrate esc 
+        self.actu.set_min_throttle()
+        
+        #print('calibrated esc "y" or "n"')
+        #inp = input()
+        #if inp == "y":
+        #    self.actu.set_min_throttle()
+#
+        #    pass 
+        #elif inp == "n": 
+        #    self.actu.calibrate_esc() #calibrate esc 
 
         self.actu.brakeon() #servo brake off b4 climbing 
 
