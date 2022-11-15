@@ -801,7 +801,7 @@ class TWILITE_REMOTE:
 
         self.pin_remote_actuate = pin_remote_actuate
         self.pin_remote_stop = pin_remote_stop 
-        gpio.setup(pin_remote_actuate, gpio.OUT, initial=gpio.HIGH)
+        gpio.setup(pin_remote_actuate, gpio.OUT, initial=gpio.LOW)
         sleep(1)
         gpio.setup(pin_remote_actuate, gpio.IN,  pull_up_down=gpio.PUD_DOWN)
         gpio.setup(pin_remote_stop, gpio.IN, pull_up_down=gpio.PUD_DOWN)
