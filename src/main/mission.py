@@ -88,11 +88,31 @@ class Resilience:
         # 0 => elevation  1 => free fall 
         self.mode = 0 
         
+        print("Condition checking...")
         #calibration setup 
         self.actu.brakeon() #servo brake off b4 climbing 
         print("Brake is ready.")
         self.actu.set_min_throttle()
         print("Motor is ready.")
+        
+        
+        print("Sensor checking...")
+        em_flag     = 1
+        rmstop_flag = 1
+        while em_flag == 1 or rmstop_flag == 1:
+            try:
+                em_flag  = self._em_sw()
+                rmstop_flag = self._remote_stop()
+ 
+                if em_flag == 1:
+                    print("turn off Emergency switch.")
+                    sleep(3)
+                if rmstop_flag == 1:
+                    print("turn off remote stop switch.")
+                    sleep(3)
+            except KeyboardInterrupt: 
+                print("Aborting the sequence")
+                sys.exit()
 
 
     def motor(self, e2s_flag, em_flag, rmstop_flag): 

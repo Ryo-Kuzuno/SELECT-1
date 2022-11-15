@@ -9,6 +9,7 @@ spec = {"radius": 0.3, "height": 2} # in meter
 sensor = {"bme" : False, "sht" : False, "counter" : True}
 
 res = Resilience(distance, reduce_rate, spec, sensor)
+print("Actuate signal waiting...")
 
 while True: 
     try: 
@@ -16,7 +17,10 @@ while True:
         
         if actuate_flag==0:
             print("Ascending sequence starts in 10s.")
-            sleep(10)
+            for i in range(10):
+                print("%d",i+1)
+                sleep()
+            print("Run!")
             res.run()
             
     except KeyboardInterrupt: 
