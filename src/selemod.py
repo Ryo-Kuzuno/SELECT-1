@@ -99,8 +99,8 @@ class Actuator:
         duty_initial = self.min_duty
         print("duty:", duty_initial)
         self.esc.start(duty_initial)
-        sleep(3)
-        print("Setup has completed.\n")
+        sleep(2)
+        print("Motor is ready\n.")
 
 
     def test_esc(self):

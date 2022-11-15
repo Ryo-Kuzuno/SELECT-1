@@ -16,15 +16,15 @@ while True:
         actuate_flag = res.twilite_remote.read_actuate()
         
         if actuate_flag==0:
-            print("Ascending sequence starts in 10s.")
+            print("Ascending sequence starts in 10s.\n")
             for i in range(10):
-                print("%d",i+1)
-                sleep()
-            print("Run!")
+                print(i+1)
+                sleep(1)
+            print("Run!\n")
             res.run()
             
     except KeyboardInterrupt: 
-        print("Aborting the sequence")
+        print("Aborting the sequence.\n")
         res.twilite_remote.destroy()
         sys.exit()
 

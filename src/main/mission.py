@@ -91,10 +91,8 @@ class Resilience:
         print("Condition checking...")
         #calibration setup 
         self.actu.brakeon() #servo brake off b4 climbing 
-        print("Brake is ready.")
-        self.actu.set_min_throttle()
-        print("Motor is ready.")
-        
+        print("Brake is ready.\n")
+        self.actu.set_min_throttle()       
         
         print("Sensor checking...")
         em_flag     = 1
@@ -113,6 +111,8 @@ class Resilience:
             except KeyboardInterrupt: 
                 print("Aborting the sequence")
                 sys.exit()
+        
+        print("Sensor clear!\n")
 
 
     def motor(self, e2s_flag, em_flag, rmstop_flag): 
