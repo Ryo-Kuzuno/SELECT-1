@@ -100,7 +100,7 @@ class Actuator:
         print("duty:", duty_initial)
         self.esc.start(duty_initial)
         sleep(2)
-        print("Motor is ready\n.")
+        print("Motor is ready.\n")
 
 
     def test_esc(self):

@@ -97,7 +97,7 @@ class Resilience:
         print("Sensor checking...")
         em_flag     = 1
         rmstop_flag = 1
-        while em_flag == 1 or rmstop_flag == 1:
+        while em_flag == 1 or rmstop_flag == 0:
             try:
                 em_flag  = self._em_sw()
                 rmstop_flag = self._remote_stop()
