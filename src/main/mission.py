@@ -138,6 +138,7 @@ class Resilience:
             e2s_0_flag, e2s_1_flag = e2s_flag
             if e2s_0_flag==1: 
             # Top E2S
+                self.actu.stop_esc(self.current_throttle)
                 print("top e2s ON")
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
                 print("turning off actuator")
