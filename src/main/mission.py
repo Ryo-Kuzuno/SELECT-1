@@ -89,10 +89,11 @@ class Resilience:
         self.mode = 0 
         
         #calibration setup 
-        self.actu.set_min_throttle()
-        print("Motor is ready. Actuate in 10s.")
         self.actu.brakeon() #servo brake off b4 climbing 
-        sleep(10)
+        print("Brake is ready.")
+        self.actu.set_min_throttle()
+        print("Motor is ready.")
+
 
     def motor(self, e2s_flag, em_flag, rmstop_flag): 
         """

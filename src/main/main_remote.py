@@ -1,7 +1,6 @@
 import sys
 sys.path.append('../')
-from selemod import TWILITE_REMOTE
-import sys 
+from time import sleep
 from mission import Resilience
 
 distance = 100 # in meter  
@@ -16,7 +15,8 @@ while True:
         actuate_flag = res.twilite_remote.read_actuate()
         
         if actuate_flag==0:
-            print("Ascending start.")
+            print("Ascending sequence starts in 10s.")
+            sleep(10)
             res.run()
             
     except KeyboardInterrupt: 
