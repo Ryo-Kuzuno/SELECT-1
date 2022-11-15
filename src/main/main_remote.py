@@ -1,5 +1,6 @@
 import main
 import sys
+from time import sleep
 from selemod import TWILITE_REMOTE
 
 pin_remote_actuate=27
@@ -11,9 +12,10 @@ while True:
         actuate_flag = twilite_remote.read_actuate()
 #       stop_flag = twilite_remote.read_stop()
 
-        if actuate_flag==0:
+        if actuate_flag==1:
             print("success")
             #main.main()
+            sleep(1)
 
     except KeyboardInterrupt: 
         print("Aborting the sequence")
