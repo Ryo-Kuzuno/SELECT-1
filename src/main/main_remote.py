@@ -18,9 +18,9 @@ while True:
         if actuate_flag==0:
             print("Ascending sequence starts in 10s.\n")
             for i in range(10):
-                print(i+1)
+                print(10-i)
                 sleep(1)
-            print("Run!\n")
+            print("\nRun!\n")
             res.run()
             
     except KeyboardInterrupt: 
