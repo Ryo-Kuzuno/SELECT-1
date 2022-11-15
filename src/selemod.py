@@ -251,7 +251,7 @@ class Actuator:
         print("duty:", duty)
         # while motion flag is True, keep motor on 
         self.esc.ChangeDutyCycle(duty)
-        sleep(20)
+        sleep(0.1)
         # self.stop_esc(duty)
 
     def new_duty(self, duty:float):
