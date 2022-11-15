@@ -31,6 +31,7 @@ while True:
             break
         elif inp == "n": 
             actu.set_min_throttle()
+            input("Press Enter to move another operation...")
             break
         else:
             print('Please input y or n.')
