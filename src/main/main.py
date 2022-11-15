@@ -7,7 +7,7 @@ def main():
     distance = 100 # in meter  
     reduce_rate = 0.05
     spec = {"radius": 0.3, "height": 2} # in meter
-    sensor = {"bme" : False, "sht" : False, "counter" : False}
+    sensor = {"bme" : False, "sht" : False, "counter" : True}
     res = Resilience(distance, reduce_rate, spec, sensor)
     
     yesorno = input("Actuate motor? y/n\n")
