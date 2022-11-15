@@ -1,4 +1,5 @@
 import main
+import sys
 from selemod import TWILITE_REMOTE
 
 pin_remote_actuate=27
@@ -16,6 +17,6 @@ while True:
 
     except KeyboardInterrupt: 
         print("Aborting the sequence")
-        gpio.cleanup()
+        twilite_remote.destroy()
         sys.exit()
 
