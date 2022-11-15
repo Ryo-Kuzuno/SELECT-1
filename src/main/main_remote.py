@@ -10,7 +10,7 @@ while True:
         actuate_flag = twilite_remote.read_actuate()
 #       stop_flag = twilite_remote.read_stop()
 
-        if actuate_flag==1:
+        if actuate_flag==0:
             print("success")
             main.main()
 
