@@ -2,12 +2,11 @@ import sys
 import RPi.GPIO as gpio 
 import smbus
 import spidev
-import time 
+from time import sleep
+import selemod
 from math import pi 
 
-import selemod 
-from selemod import Actuator, Bme280, Sht31, E2S, Encoder, LS7366R
-from EM_switch import EM_SW
+from selemod import Actuator, Bme280, Sht31, E2S, Encoder, LS7366R, TWILITE_REMOTE, EM_SW
 
 import threading # if unable to import, use "pip3 install thread6 in terminal"
 
@@ -41,7 +40,10 @@ class Resilience:
         self.pin_e2s_bottom = 20 
         # emergency switch pin setup 
         self.pin_em_sw = 21
-
+        # remote operation (TWILITE) pin setup 
+        self.pin_remote_actuate = 27
+        self.pin_remote_stop    = 26
+        
         # motor motion setup
         self.freq_esc = 50 
         self.freq_servo = 50 
@@ -67,6 +69,7 @@ class Resilience:
                         throttle_a0=self.throttle_a0, throttle_a1=self.throttle_a1) 
         self.e2s = E2S(self.pin_e2s_top, self.pin_e2s_bottom) 
         self.em_sw = EM_SW(self.pin_em_sw) 
+        self.twilite_remote = TWILITE_REMOTE(self.pin_remote_actuate, self.pin_remote_stop) 
         
         if self.bme_is_use: 
             self.bme280 = Bme280(0x76) #bme280 sensor
@@ -87,19 +90,11 @@ class Resilience:
         
         #calibration setup 
         self.actu.set_min_throttle()
-        
-        #print('calibrated esc "y" or "n"')
-        #inp = input()
-        #if inp == "y":
-        #    self.actu.set_min_throttle()
-#
-        #    pass 
-        #elif inp == "n": 
-        #    self.actu.calibrate_esc() #calibrate esc 
-
+        print("Motor is ready. Actuate in 10s.")
         self.actu.brakeon() #servo brake off b4 climbing 
+        sleep(10)
 
-    def motor(self, e2s_flag, em_flag): 
+    def motor(self, e2s_flag, em_flag, rmstop_flag): 
         """
         Arguments
         -------------------------------------------------------------------
@@ -138,23 +133,22 @@ class Resilience:
                 self.mode = 1 
                 print("switching to mode 1")
 
-            # E2S emergency stop 
+            # Proximity switch (E2S) stop 
             e2s_0_flag, e2s_1_flag = e2s_flag
             if e2s_0_flag==1: 
+            # Top E2S
                 print("top e2s ON")
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
                 print("turning off actuator")
-                self.actu.stop_esc(self.current_throttle)
                 self.actu.brakeoff()
                 self.actu.check_brake()
                 gpio.cleanup()
                 sys.exit()
-                #self.mode = 1                  #for retarding
-                #print("switching to mode 1")   #for retarding
             else: 
-                pass 
+                pass
             
-            if e2s_1_flag==1: 
+            if e2s_1_flag==1:
+            # Bottom E2S
                 self.actu.stop_esc(self.current_throttle)
                 print("bottom e2s ON")
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
@@ -163,12 +157,23 @@ class Resilience:
                 self.actu.check_brake()
                 gpio.cleanup()
                 sys.exit()
-                #self.mode = 1
-                #print("switching to mode 1")
             else: 
-                pass 
-
-            # Emergency switch stop 
+                pass
+            
+            # Remote switch (TWILITE) stop
+            if rmstop_flag == 1: 
+                self.actu.stop_esc(self.current_throttle)
+                print("remote stop switch ON")
+                print("Final position status : count {},  position {}".format(self.count, self.pos))
+                print("turning off actuator")
+                self.actu.brakeoff()
+                self.actu.check_brake()
+                gpio.cleanup()
+                sys.exit()
+            else: 
+                pass
+            
+            # Emergency switch stop
             if em_flag == 1: 
                 self.actu.stop_esc(self.current_throttle)
                 print("emergency switch ON")
@@ -179,7 +184,8 @@ class Resilience:
                 gpio.cleanup()
                 sys.exit()
             else: 
-                pass  
+                pass
+            
 
         # once self.mode is set to 1 (climb down), never change self.mode to 0 (for safety reason)
         # while self.mode = 1, continue heli-mode -> change to normal mode and set throttle 0 
@@ -211,17 +217,19 @@ class Resilience:
         e2s_1_flag = self.e2s.read_bottom()
         return (e2s_0_flag, e2s_1_flag)
 
-    
     def _em_sw(self): 
         em_flag = self.em_sw.read()
         return em_flag
+    
+    def _remote_stop(self): 
+        rmstop_flag = self.twilite_remote.read_stop()
+        return rmstop_flag
     
     def _encoder(self): 
         '''based on encoder count value, compute climber's position'''
         self.count = self.ls7366r.readCounter()
         self.pos = 2 * pi * self.RADIUS * self.count
         print("count: {}    position{}m\n".format(self.count, self.pos))
-
 
     def _bme280(self): 
         press, temp, humid = self.bme280.read()
@@ -242,9 +250,11 @@ class Resilience:
 
         while True: 
             try: 
-                em_flag = self._em_sw()
+                em_flag  = self._em_sw()
                 e2s_flag = self._e2s()
-                self.motor(e2s_flag, em_flag)
+                rmstop_flag = self._remote_stop()
+                
+                self.motor(e2s_flag, em_flag, rmstop_flag)
                 self._encoder()
             except KeyboardInterrupt: 
                 print("Aborting the sequence")
@@ -272,7 +282,8 @@ class Resilience:
             try: 
                 em_flag = self._em_sw()
                 e2s_flag = self._e2s()
-                self.motor(e2s_flag, em_flag) #since self.mode = 1, start sequence from backward running
+                rmstop_flag = self._remote_stop()
+                self.motor(e2s_flag, em_flag, rmstop_flag) #since self.mode = 1, start sequence from backward running
             except KeyboardInterrupt: 
                 print("Aborting the sequence")
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
