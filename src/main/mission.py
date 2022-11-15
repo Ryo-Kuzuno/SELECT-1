@@ -256,7 +256,7 @@ class Resilience:
                 rmstop_flag = self._remote_stop()
                 
                 self.motor(e2s_flag, em_flag, rmstop_flag)
-                self._encoder()
+                #self._encoder()
             except KeyboardInterrupt: 
                 print("Aborting the sequence")
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
@@ -273,8 +273,8 @@ class Resilience:
         self.pos = pos 
 
         #enc_thread = threading.Thread(target=self._encoder)
-        enc_thread.start()
-        enc_thread.setDaemon(True)
+        #enc_thread.start()
+        #enc_thread.setDaemon(True)
 
         # forcely set self.mode = 1 to switch to backward run 
         self.mode = 1 
