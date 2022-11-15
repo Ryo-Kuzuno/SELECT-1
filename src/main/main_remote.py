@@ -1,24 +1,26 @@
-import main
 import sys
-from time import sleep
+sys.path.append('../')
 from selemod import TWILITE_REMOTE
+import sys 
+from mission import Resilience
 
-pin_remote_actuate=27
-pin_remote_stop=26
-twilite_remote=TWILITE_REMOTE(pin_remote_actuate,pin_remote_stop)
+distance = 100 # in meter  
+reduce_rate = 0.05
+spec = {"radius": 0.3, "height": 2} # in meter
+sensor = {"bme" : False, "sht" : False, "counter" : True}
+
+res = Resilience(distance, reduce_rate, spec, sensor)
 
 while True: 
     try: 
-        actuate_flag = twilite_remote.read_actuate()
-#       stop_flag = twilite_remote.read_stop()
-
+        actuate_flag = res.twilite_remote.read_actuate()
+        
         if actuate_flag==0:
-            print("success")
-            #main.main()
-            sleep(1)
-
+            print("Ascending start.")
+            res.run()
+            
     except KeyboardInterrupt: 
         print("Aborting the sequence")
-        twilite_remote.destroy()
+        res.twilite_remote.destroy()
         sys.exit()
 
