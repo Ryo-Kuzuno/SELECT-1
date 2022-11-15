@@ -161,7 +161,7 @@ class Resilience:
                 pass
             
             # Remote switch (TWILITE) stop
-            if rmstop_flag == 1: 
+            if rmstop_flag == 0: 
                 self.actu.stop_esc(self.current_throttle)
                 print("remote stop switch ON")
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
