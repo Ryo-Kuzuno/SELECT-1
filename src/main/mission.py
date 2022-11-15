@@ -88,7 +88,7 @@ class Resilience:
         # 0 => elevation  1 => free fall 
         self.mode = 0 
         
-        print("Condition checking...")
+        print("Condition checking...\n")
         #calibration setup 
         self.actu.brakeon() #servo brake off b4 climbing 
         print("Brake is ready.\n")
