@@ -10,9 +10,9 @@ while True:
         actuate_flag = twilite_remote.read_actuate()
 #       stop_flag = twilite_remote.read_stop()
 
-        if actuate_flag==0:
+        if actuate_flag==1:
             print("success")
-            main.main()
+            #main.main()
 
     except KeyboardInterrupt: 
         print("Aborting the sequence")
