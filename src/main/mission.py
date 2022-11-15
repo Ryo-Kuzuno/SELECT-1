@@ -107,7 +107,7 @@ class Resilience:
                 if em_flag == 1:
                     print("turn off Emergency switch.")
                     sleep(3)
-                if rmstop_flag == 1:
+                if rmstop_flag == 0:
                     print("turn off remote stop switch.")
                     sleep(3)
             except KeyboardInterrupt: 
