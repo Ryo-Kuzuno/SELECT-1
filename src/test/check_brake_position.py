@@ -4,7 +4,7 @@
 #import dependencies 
 import sys 
 sys.path.append('../main')
-from main import selemod 
+from selemod import Actuator
 
 # instantiate actuator class 
 pin_esc = 18
@@ -20,7 +20,7 @@ throttle_a1 = 0.047
 pin_ec2_top = 16 
 pin_ec2_bottom = 20
 
-actu = selemod.Actuator(pin_esc=pin_esc, pin_servo_1=pin_servo_1, 
+actu = Actuator(pin_esc=pin_esc, pin_servo_1=pin_servo_1, 
                         freq_esc=freq_esc, freq_servo=freq_servo, 
                         brakeon_duty=brakeon_duty, brakeoff_duty=brakeoff_duty,
                         throttle_a0=throttle_a0, throttle_a1=throttle_a1)
