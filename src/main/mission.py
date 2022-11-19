@@ -285,6 +285,7 @@ class Resilience:
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
                 self.actu.stop_esc(self.current_throttle)
                 self.actu.brakeoff()
+                self.actu.check_brake()
                 gpio.cleanup()
                 sys.exit()
 
