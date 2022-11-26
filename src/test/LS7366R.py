@@ -74,9 +74,10 @@ class LS7366R():
         self.spi.open(0, CSX) #Which CS line will be used
         self.spi.max_speed_hz = CLK #Speed of clk (modifies speed transaction)
         self.pin_RST = 25
+        self.pin_INT = 12
         gpio.setmode(gpio.BCM) 
-        #gpio.setup(self.pin_RST, gpio.OUT, initial=gpio.LOW)
-        gpio.setup(self.pin_RST, gpio.IN, pull_up_down=gpio.PUD_DOWN)
+        gpio.setup(self.pin_RST, gpio.OUT, initial=gpio.HIGH)
+        gpio.setup(self.pin_INT, gpio.OUT, initial=gpio.LOW)
         
 
         #Init the Encoder
@@ -136,8 +137,8 @@ if __name__ == "__main__":
     try:
         while True:
             count = encoder.readCounter()
-            print("Encoder count: ", count, " Press CTRL-C to terminate test program.")
-            position = 2 * pi * RADIUS * count
+            #print("Encoder count: ", count, " Press CTRL-C to terminate test program.")
+            position = 2 * pi * RADIUS * count / 2048
             print("Position: ", position)
             sleep(0.5)
     except KeyboardInterrupt:
