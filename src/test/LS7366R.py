@@ -76,7 +76,7 @@ class LS7366R():
         self.pin_RST = 25
         gpio.setmode(gpio.BCM) 
         #gpio.setup(self.pin_RST, gpio.OUT, initial=gpio.LOW)
-        gpio.setup(self.pin_RST, gpio.IN, pull_up_down=gpio.PUD_UP)
+        gpio.setup(self.pin_RST, gpio.IN, pull_up_down=gpio.PUD_DOWN)
         
 
         #Init the Encoder
