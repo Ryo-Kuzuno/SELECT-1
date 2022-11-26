@@ -73,9 +73,9 @@ class LS7366R():
         self.spi = spidev.SpiDev() #Initialize object
         self.spi.open(0, CSX) #Which CS line will be used
         self.spi.max_speed_hz = CLK #Speed of clk (modifies speed transaction)
-        self.pin_RST = 6
+        self.pin_RST = 25
         gpio.setmode(gpio.BCM) 
-        gpio.setup(self.pin_RST, gpio.OUT, initial=gpio.LOW)
+        gpio.setup(self.pin_RST, gpio.OUT, initial=gpio.HIGH)
         
 
         #Init the Encoder
