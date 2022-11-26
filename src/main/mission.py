@@ -254,7 +254,7 @@ class Resilience:
         '''based on encoder count value, compute climber's position'''
         self.rotary_rate = self.ls7366r.readRotaryRate()
         self.pos = - 2 * pi * self.RADIUS * self.rotary_rate
-        print("Position: ", self.rotary_rate)
+        print("Position: ", self.pos)
         
     def _bme280(self): 
         press, temp, humid = self.bme280.read()
