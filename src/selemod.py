@@ -770,6 +770,10 @@ class LS7366R():
         # e.g.) If count is 2048, rotaryRate is 1.
         # Encoder counts 2048 pulse per one rotation if countersize = 4
         count = self.readCounter
+        print(count)
+        print(type(count))
+        print(self.pulse_per_rotary)
+        print(type(self.pulse_per_rotary))
         rotaryRate = float(count / self.pulse_per_rotary)
         
         return rotaryRate
