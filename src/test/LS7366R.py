@@ -19,6 +19,7 @@
 # These are the values I normally use.
 
 import spidev 
+import RPi.GPIO as gpio
 from time import sleep
 
 class LS7366R():
@@ -71,7 +72,11 @@ class LS7366R():
 
         self.spi = spidev.SpiDev() #Initialize object
         self.spi.open(0, CSX) #Which CS line will be used
-        self.spi.max_speed_hz = CLK #Speed of clk (modifies speed transaction) 
+        self.spi.max_speed_hz = CLK #Speed of clk (modifies speed transaction)
+        self.pin_RST = 6
+        gpio.setmode(gpio.BCM) 
+        gpio.setup(self.pin_RST, gpio.OUT, initial=gpio.LOW)
+        
 
         #Init the Encoder
         print('Clearing Encoder CS%s\'s Count...\t' % (str(CSX)), self.clearCounter())
