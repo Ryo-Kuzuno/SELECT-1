@@ -55,6 +55,7 @@ class LS7366R():
     ONEBYTE_COUNTER = 0x03
 
     BYTE_MODE = [ONEBYTE_COUNTER, TWOBYTE_COUNTER, THREEBYTE_COUNTER, FOURBYTE_COUNTER]
+    PPR_ARRAY = [256, 512, 1024 , 2048]
 
     #   Values
     max_val = 4294967295
@@ -66,18 +67,20 @@ class LS7366R():
     #----------------------------------------------
     # Constructor
 
-    def __init__(self, CSX, CLK, BTMD):
+    def __init__(self, CSX, CLK, BTMD, pin_RST, pin_INT):
         self.counterSize = BTMD #Sets the byte mode that will be used
 
 
         self.spi = spidev.SpiDev() #Initialize object
         self.spi.open(0, CSX) #Which CS line will be used
         self.spi.max_speed_hz = CLK #Speed of clk (modifies speed transaction)
-        self.pin_RST = 25
-        self.pin_INT = 12
+        
+        self.pin_RST = pin_RST
+        self.pin_INT = pin_INT
+        
         gpio.setmode(gpio.BCM) 
-        gpio.setup(self.pin_RST, gpio.OUT, initial=gpio.HIGH)
-        gpio.setup(self.pin_INT, gpio.OUT, initial=gpio.LOW)
+        gpio.setup(self.pin_RST, gpio.OUT, initial=gpio.HIGH) # reset pin needs to be HIGH to operate normally
+        gpio.setup(self.pin_INT, gpio.OUT, initial=gpio.LOW)  # intervene pin is normally LOW if not consider external intervene
         
 
         #Init the Encoder
@@ -89,6 +92,8 @@ class LS7366R():
         sleep(.1) #Rest
         
         self.spi.xfer2([self.WRITE_MODE1, self.BYTE_MODE[self.counterSize-1]])
+        self.pulse_per_rotary = self.PPR_ARRAY[self.counterSize-1]
+
 
     def close(self):
         print('\nThanks for using me! :)')
@@ -119,7 +124,18 @@ class LS7366R():
         if data[1] != 255:    
             return EncoderCount
         else:
-            return (EncoderCount - (self.max_val+1))  
+            return (EncoderCount - (self.max_val+1))
+        
+    def readRotaryRate(self):
+        # translate pulse number into rotary rate
+        # e.g.) If count is 2048, rotaryRate is 1.
+        # Encoder counts 2048 pulse per one rotation if countersize = 4
+        pulse = self.readCounter
+        rotaryRate = pulse / self.pulse_per_rotary
+        
+        return rotaryRate
+        
+        
         
     def readStatus(self):
         data = self.spi.xfer2([self.READ_STATUS, 0xFF])
@@ -133,7 +149,9 @@ if __name__ == "__main__":
     
     
     RADIUS  = 0.3
-    encoder = LS7366R(0, 1000000, 4)
+    pin_RST = 25
+    pin_INT = 12
+    encoder = LS7366R(0, 1000000, 4, pin_RST, pin_INT)
     try:
         while True:
             count = encoder.readCounter()

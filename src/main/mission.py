@@ -43,6 +43,9 @@ class Resilience:
         # remote operation (TWILITE) pin setup 
         self.pin_remote_actuate = 27
         self.pin_remote_stop    = 26
+        # rotary encoder counter IC pin setup 
+        self.pin_rst = 25
+        self.pin_int = 12
         
         # motor motion setup
         self.freq_esc = 50 
@@ -76,7 +79,7 @@ class Resilience:
         if self.sht_is_use: 
             self.sht31 = Sht31(0x45) #sht31 sensor
         if self.counter_is_use: 
-            self.ls7366r = LS7366R(0, 1000000, 4) #spi ce0 & byte mode=4
+            self.ls7366r = LS7366R(0, 1000000, 4, self.pin_rst, self.pin_int) #spi ce0 & byte mode=4
 
 
         # encoder pin setup & count, pos
@@ -249,12 +252,10 @@ class Resilience:
     
     def _encoder(self): 
         '''based on encoder count value, compute climber's position'''
-        self.count = self.ls7366r.readCounter()
-        self.pos = 2 * pi * self.RADIUS * self.count
-        print("Encoder count: ", self.count)
-        print("Position: ",      self.count)
-        #print("count: {}    position{}m\n".format(self.count, self.pos))
-
+        self.rotary_rate = self.ls7366r.readRotaryRate()
+        self.pos = 2 * pi * self.RADIUS * self.rotary_rate
+        print("Position: ", self.rotary_rate)
+        
     def _bme280(self): 
         press, temp, humid = self.bme280.read()
         return (press, temp, humid)
