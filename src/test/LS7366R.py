@@ -128,11 +128,17 @@ class LS7366R():
 
 if __name__ == "__main__":
     from time import sleep
+    from math import pi 
     
+    
+    RADIUS  = 0.3
     encoder = LS7366R(0, 1000000, 4)
     try:
         while True:
-            print("Encoder count: ", encoder.readCounter(), " Press CTRL-C to terminate test program.")
+            count = encoder.readCounter()
+            print("Encoder count: ", count, " Press CTRL-C to terminate test program.")
+            position = 2 * pi * RADIUS * count
+            print("Position: ", position)
             sleep(0.5)
     except KeyboardInterrupt:
         encoder.close()
