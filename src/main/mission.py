@@ -269,9 +269,9 @@ class Resilience:
         # main program cc
 
         # process _encoder function in another thread
-        enc_thread = threading.Thread(target=self._encoder)
-        enc_thread.start()
-        enc_thread.setDaemon(True)
+        #enc_thread = threading.Thread(target=self._encoder)
+        #enc_thread.start()
+        #enc_thread.setDaemon(True)
 
         while True: 
             try: 
@@ -297,9 +297,9 @@ class Resilience:
         self.count = count 
         self.pos = pos 
 
-        enc_thread = threading.Thread(target=self._encoder)
-        enc_thread.start()
-        enc_thread.setDaemon(True)
+        #enc_thread = threading.Thread(target=self._encoder)
+        #enc_thread.start()
+        #enc_thread.setDaemon(True)
 
         # forcely set self.mode = 1 to switch to backward run 
         self.mode = 1 
