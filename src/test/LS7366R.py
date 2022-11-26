@@ -75,7 +75,8 @@ class LS7366R():
         self.spi.max_speed_hz = CLK #Speed of clk (modifies speed transaction)
         self.pin_RST = 25
         gpio.setmode(gpio.BCM) 
-        gpio.setup(self.pin_RST, gpio.OUT, initial=gpio.LOW)
+        #gpio.setup(self.pin_RST, gpio.OUT, initial=gpio.LOW)
+        gpio.setup(self.pin_RST, gpio.IN, pull_up_down=gpio.PUD_UP)
         
 
         #Init the Encoder
