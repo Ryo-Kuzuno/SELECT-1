@@ -6,7 +6,7 @@ from mission import Resilience
 def main(): 
     distance = 100 # in meter  
     reduce_rate = 0.05
-    spec = {"radius": 0.3, "height": 2} # in meter
+    spec = {"radius": 0.3, "height": 2, "gear_ratio_enc2roller": 1/3} # in meter
     sensor = {"bme" : False, "sht" : False, "counter" : True}
     res = Resilience(distance, reduce_rate, spec, sensor)
     
