@@ -154,9 +154,11 @@ if __name__ == "__main__":
     encoder = LS7366R(0, 1000000, 4, pin_RST, pin_INT)
     try:
         while True:
-            count = encoder.readCounter()
+            #count = encoder.readCounter()
             #print("Encoder count: ", count, " Press CTRL-C to terminate test program.")
-            position = 2 * pi * RADIUS * count / 2048
+            #position = 2 * pi * RADIUS * count / 2048
+            rotaryRate = encoder.readRotaryRate()
+            position = 2 * pi * RADIUS * rotaryRate
             print("Position: ", position)
             sleep(0.5)
     except KeyboardInterrupt:
