@@ -160,7 +160,9 @@ if __name__ == "__main__":
             rotaryRate = encoder.readRotaryRate()
             position = 2 * pi * RADIUS * rotaryRate
             print("Position: ", position)
-            sleep(0.5)
+            # Less than 0.05 s sleep at 1MHz causes integration error.
+            # It can be deduced caused by the limit of sampling theory.
+            sleep(0.05)
     except KeyboardInterrupt:
         encoder.close()
         print("All done, bye bye.")

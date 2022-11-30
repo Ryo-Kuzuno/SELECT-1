@@ -255,7 +255,6 @@ class Resilience:
         self.rotary_rate = self.ls7366r.readRotaryRate()
         self.pos = - 2 * pi * self.RADIUS * self.rotary_rate
         print("Position: {:.2f}" .format(self.pos))
-        
     def _bme280(self): 
         press, temp, humid = self.bme280.read()
         return (press, temp, humid)
@@ -281,6 +280,7 @@ class Resilience:
                 
                 self.motor(e2s_flag, em_flag, rmstop_flag)
                 self._encoder()
+                sleep(0.05) 
             except KeyboardInterrupt: 
                 print("Aborting the sequence")
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
@@ -310,6 +310,8 @@ class Resilience:
                 e2s_flag = self._e2s()
                 rmstop_flag = self._remote_stop()
                 self.motor(e2s_flag, em_flag, rmstop_flag) #since self.mode = 1, start sequence from backward running
+                self._encoder()
+                sleep(0.05) 
             except KeyboardInterrupt: 
                 print("Aborting the sequence")
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
