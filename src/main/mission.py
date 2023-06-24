@@ -158,8 +158,8 @@ class Resilience:
                 sleep(2)
                 self.actu.stop_esc(self.current_throttle)
                 self.actu.brakeoff()
-                self.mode = 1 
-                print("switching to mode 1")
+                #self.mode = 1 
+                #print("switching to mode 1")
                 sleep(2)
                 self.actu.brakeon()
 
