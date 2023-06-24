@@ -2,4 +2,5 @@
 *.pyc
 *.swp
 *.csv
+*.ini
 ref/
