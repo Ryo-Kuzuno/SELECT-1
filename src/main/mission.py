@@ -153,11 +153,12 @@ class Resilience:
             #### esc stop sequence ####
             # if near the goal, stop esc (this area is above safe zone, so immediately set throttle 0 once the climber reach this area)
             if self.upper_lim <= self.pos: 
-                print("climber near the goal")
-                self.actu.new_throttle(self.throttle_slowdown)
-                sleep(2)
+                print("Finish! Brake is turned on.")
+                #print("climber near the goal")
+                #self.actu.new_throttle(self.throttle_slowdown)
+                #sleep(2)
                 self.actu.stop_esc(self.current_throttle)
-                self.actu.brakeoff()
+                #self.actu.brakeoff()
                 #self.mode = 1 
                 #print("switching to mode 1")
                 sleep(2)
