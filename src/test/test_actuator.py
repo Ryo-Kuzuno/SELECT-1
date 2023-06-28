@@ -1,5 +1,4 @@
-import selemod 
-import test_ec2
+from selemod import Actuator, E2S
 
 pin_esc = 18
 pin_servo_1 = 23
