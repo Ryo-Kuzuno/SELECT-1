@@ -136,11 +136,14 @@ class Resilience:
         # throttle value of each domain is initialized in construction 
 
         if self.mode == 0:
-            if self.lower_lim <= self.pos < self.middle_lim1: 
+            if self.lower_lim <= self.pos < self.middle_lim1:
+                print("mode A") 
                 self.target_throttle = self.throttle1
-            elif self.middle_lim1 <= self.pos < self.middle_lim2: 
+            elif self.middle_lim1 <= self.pos < self.middle_lim2:
+                print("mode B") 
                 self.target_throttle = self.throttle2
-            elif self.middle_lim2 <= self.pos < self.upper_lim: 
+            elif self.middle_lim2 <= self.pos < self.upper_lim:
+                print("mode C") 
                 self.target_throttle = self.throttle3
 
             if self.current_throttle != self.target_throttle: #change throttle value only if current throttle and target throttle is different
