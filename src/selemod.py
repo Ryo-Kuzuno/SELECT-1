@@ -42,10 +42,15 @@ class Actuator:
             self.min_pulsewidth = 1030
             self.mid_pulsewidth = 1500
             print("One-directional esc")
-            self.default_duty   = self.min_duty
+
+            pulseperiod = 1/self.freq_esc
+            self.max_duty = self.max_pulsewidth / 10**6 / pulseperiod * 100
+            self.min_duty = self.min_pulsewidth / 10**6 / pulseperiod * 100
+            self.mid_duty = self.mid_pulsewidth / 10**6 / pulseperiod * 100
 
             self.throttle_a0 = 5.15     # duty vs throttle weight (this was estiamted from linear regression)
             self.throttle_a1 = 0.047    # duty vs throttle bias
+            self.default_duty   = self.min_duty
 
 
         elif self.esc_type == 'bidir':
@@ -53,19 +58,18 @@ class Actuator:
             self.min_pulsewidth = 1000
             self.mid_pulsewidth = 1500
             print("Bi-directional esc")
-            self.default_duty   = self.mid_duty
+
+            pulseperiod = 1/self.freq_esc
+            self.max_duty = self.max_pulsewidth / 10**6 / pulseperiod * 100
+            self.min_duty = self.min_pulsewidth / 10**6 / pulseperiod * 100
+            self.mid_duty = self.mid_pulsewidth / 10**6 / pulseperiod * 100
 
             self.throttle_a0 = 7.5      # duty vs throttle weight (this was estiamted from linear regression)
             self.throttle_a1 = 0.025    # duty vs throttle bias
+            self.default_duty   = self.mid_duty
         else:
             print("incorrect key of esc_type")
             sys.exit()
-            
-
-        pulseperiod = 1/self.freq_esc
-        self.max_duty = self.max_pulsewidth / 10**6 / pulseperiod * 100
-        self.min_duty = self.min_pulsewidth / 10**6 / pulseperiod * 100
-        self.mid_duty = self.mid_pulsewidth / 10**6 / pulseperiod * 100
 
 
         """
