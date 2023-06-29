@@ -34,20 +34,27 @@ class Actuator:
         self.freq_esc = freq_esc
         self.freq_servo  = freq_servo
         self.pin_servo_1 = pin_servo_1
-        self.throttle_a0 = throttle_a0
-        self.throttle_a1 = throttle_a1
         self.constup_throttle = constup_throttle
         self.brakeon_duty = brakeon_duty
         self.brakeoff_duty = brakeoff_duty
         self.decrease_rate = 0.1
 
-        self.max_pulsewidth = 1970
-        self.min_pulsewidth = 1030
-        self.mid_pulsewidth = 1500
-
-        #self.max_pulsewidth = 2000
-        #self.min_pulsewidth = 1000
-        #self.mid_pulsewidth = 1500
+        if self.esc_type == 'onedir':
+            self.max_pulsewidth = 1970
+            self.min_pulsewidth = 1030
+            self.mid_pulsewidth = 1500
+            self.throttle_a0 = throttle_a0
+            self.throttle_a1 = throttle_a1
+        elif self.esc_type == 'bidir':
+            self.max_pulsewidth = 2000
+            self.min_pulsewidth = 1000
+            self.mid_pulsewidth = 1500
+            self.throttle_a0 = 7.5
+            self.throttle_a1 = 0.025
+        else:
+            print("incorrect key of esc_type")
+            sys.exit()
+            
 
         pulseperiod = 1/self.freq_esc
         self.max_duty = self.max_pulsewidth / 10**6 / pulseperiod * 100
