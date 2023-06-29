@@ -229,8 +229,9 @@ class Resilience:
             #swith to heli-mode every 5% of DISTANCE
             if self.current_throttle != self.throttle_const: 
                 print("climber in mode 1:")
-                print("setting throttle 40%")
+                print("setting throttle : %.1f\n" %self.throttle_const)
                 self.actu.new_throttle(self.throttle_const)
+                print("mode D") 
                 self.current_throttle = self.throttle_const
 
             if int(self.pos)%(self.DISTANCE*self.REDUCE_RATE) == 0: 
