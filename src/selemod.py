@@ -81,8 +81,8 @@ class Actuator:
             self.calibrate_esc_onedir()
         elif self.esc_type == 'bidir':
             print("Calibrating bi-directional esc")
-            self.max_pulsewidth = 2000
-            self.min_pulsewidth = 1000
+            self.max_pulsewidth = 1970
+            self.min_pulsewidth = 1030
             self.mid_pulsewidth = 1500
 
             self.calibrate_esc_bidir()
@@ -104,7 +104,7 @@ class Actuator:
         print("\nsetting esc max pulse\n")
         print("Maximum duty ratio: %.1f\n" %self.max_duty)
 
-        print("connect battery. Press Enter after the beep。")
+        print("connect battery. Press Enter after the beep.")
         inp = input()
         if inp == '':
             self.esc.ChangeDutyCycle(self.min_duty)
@@ -128,7 +128,7 @@ class Actuator:
         print("\nsetting esc max pulse\n")
         print("Maximum duty ratio: %.1f\n" %self.max_duty)
 
-        print("connect battery. Press Enter after the beep。")
+        print("connect battery. Press Enter after the beep.")
         inp = input()
         if inp == '':
             self.esc.ChangeDutyCycle(self.mid_duty)
