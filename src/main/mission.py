@@ -56,9 +56,9 @@ class Resilience:
         self.current_throttle = 0
         self.target_throttle = 0  
         self.lower_lim = 0 
-        self.middle_lim1 = 0.3 * self.DISTANCE
-        self.middle_lim2 = 0.5 * self.DISTANCE
-        self.upper_lim = 0.85 * self.DISTANCE 
+        self.middle_lim1 = 0.6 * self.DISTANCE
+        self.middle_lim2 = 0.8 * self.DISTANCE
+        self.upper_lim = 0.9 * self.DISTANCE 
         self.throttle1 = 25 
         self.throttle2 = 23 
         self.throttle3 = 22
@@ -166,7 +166,7 @@ class Resilience:
                 self.mode = 1 
                 self.maxReachHeight = self.DISTANCE
                 print("switching to mode 1")
-                sleep(2)
+                sleep(10)
                 self.actu.brakeon()
 
             # Proximity switch (E2S) stop 
@@ -237,9 +237,8 @@ class Resilience:
 
             if self.pos < self.maxReachHeight*self.REDUCE_RATE: 
                 print("turning off motor and activate brake for 5sec")
-                self.actu.brakeoff() ####brake first or stop esc?####
                 self.actu.stop_esc(self.current_throttle)
-                self.actu.check_brake()
+                self.actu.brakeoff() ####brake first or stop esc?####
                 sleep(5)
                 gpio.cleanup()
                 sys.exit()
