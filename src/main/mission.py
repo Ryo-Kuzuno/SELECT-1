@@ -228,14 +228,14 @@ class Resilience:
         # while self.mode = 1, continue heli-mode -> change to normal mode and set throttle 0 
         elif self.mode == 1: 
             #swith to heli-mode every 5% of DISTANCE
+            print("climber in mode 1:")
+            print("mode D" )
             if self.current_throttle != self.throttle_const: 
-                print("climber in mode 1:")
-                print("setting throttle : %.1f\n" %self.throttle_const)
                 self.actu.new_throttle(self.throttle_const)
-                print("mode D" )
+                print("setting throttle : %.1f\n" %self.throttle_const)
                 self.current_throttle = self.throttle_const
 
-            if (self.pos) < self.maxReachHeight*self.REDUCE_RATE: 
+            if self.pos < self.maxReachHeight*self.REDUCE_RATE: 
                 print("turning off motor and activate brake for 5sec")
                 self.actu.brakeoff() ####brake first or stop esc?####
                 self.actu.stop_esc(self.current_throttle)
@@ -243,6 +243,7 @@ class Resilience:
                 sleep(5)
                 gpio.cleanup()
                 sys.exit()
+                
         
     def brake(self, servo_flag):
          """ 
