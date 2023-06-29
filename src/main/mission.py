@@ -52,9 +52,7 @@ class Resilience:
         self.freq_esc = 50 
         self.freq_servo = 50 
         self.brakeon_duty = 8.72
-        self.brakeoff_duty = 4.85 
-        self.throttle_a0 = 5.15 # duty vs throttle weight (this was estiamted from linear regression)
-        self.throttle_a1 = 0.047 # duty vs throttle bias
+        self.brakeoff_duty = 4.85
         self.current_throttle = 0
         self.target_throttle = 0  
         self.lower_lim = 0 
@@ -70,8 +68,7 @@ class Resilience:
         # instantiation 
         self.actu = selemod.Actuator(pin_esc=self.pin_esc, pin_servo_1=self.pin_servo_1, 
                         freq_esc=self.freq_esc, freq_servo=self.freq_servo, 
-                        brakeoff_duty=self.brakeoff_duty, brakeon_duty=self.brakeon_duty, 
-                        throttle_a0=self.throttle_a0, throttle_a1=self.throttle_a1) 
+                        brakeoff_duty=self.brakeoff_duty, brakeon_duty=self.brakeon_duty) 
         self.e2s = E2S(self.pin_e2s_top, self.pin_e2s_bottom) 
         self.em_sw = EM_SW(self.pin_em_sw) 
         self.twilite_remote = TWILITE_REMOTE(self.pin_remote_actuate, self.pin_remote_stop) 
@@ -97,7 +94,7 @@ class Resilience:
         #calibration setup 
         self.actu.brakeon() #servo brake off b4 climbing 
         print("Brake is ready.\n")
-        self.actu.set_min_throttle()       
+        self.actu.set_default_throttle()       
         
         print("Sensor checking...")
         em_flag     = 1

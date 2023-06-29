@@ -30,7 +30,7 @@ while True:
             actu.calibrate_esc()
             break
         elif inp == "n": 
-            actu.set_min_throttle()
+            actu.set_default_throttle()
             input("Press Enter to move another operation...")
             break
         else:
