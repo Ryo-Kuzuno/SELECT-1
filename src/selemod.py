@@ -86,7 +86,7 @@ class Actuator:
             self.mid_pulsewidth = 1500
 
             self.calibrate_esc_bidir()
-        else
+        else :
             print("incorrect key of esc_type")
 
             
