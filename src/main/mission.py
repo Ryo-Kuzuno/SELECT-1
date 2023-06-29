@@ -231,15 +231,15 @@ class Resilience:
                 print("climber in mode 1:")
                 print("setting throttle : %.1f\n" %self.throttle_const)
                 self.actu.new_throttle(self.throttle_const)
-                print("mode D %f" int(self.pos)%(self.DISTANCE*self.REDUCE_RATE))
+                print("mode D" )
                 self.current_throttle = self.throttle_const
 
-            if int(self.pos)%(self.DISTANCE*self.REDUCE_RATE) == 0: 
+            if (self.pos)-(self.DISTANCE*self.REDUCE_RATE) == 0: 
                 print("turning off motor and activate brake for 5sec")
                 self.actu.brakeoff() ####brake first or stop esc?####
                 self.actu.stop_esc(self.current_throttle)
-                sleep(5)
                 self.actu.check_brake()
+                sleep(5)
                 gpio.cleanup()
                 sys.exit()
         
