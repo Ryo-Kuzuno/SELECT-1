@@ -132,7 +132,7 @@ class Actuator:
         inp = input()
         if inp == '':
             self.esc.ChangeDutyCycle(self.mid_duty)
-            print("Minimum duty ratio: %.1f\n" %self.mid_duty)
+            print("Medium (neutral) duty ratio: %.1f\n" %self.mid_duty)
 
             print("Is the motor silent? y/n")
             yesorno = input()
