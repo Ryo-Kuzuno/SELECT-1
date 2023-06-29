@@ -61,9 +61,9 @@ class Resilience:
         self.upper_lim = 0.85 * self.DISTANCE 
         self.throttle1 = 25 
         self.throttle2 = 20 
-        self.throttle3 = 15
-        self.throttle_slowdown = 10
-        self.throttle_const = -10 # if heli-mode cannot be used, use low rpm throttle instead  
+        self.throttle3 = 20
+        self.throttle_slowdown = 15
+        self.throttle_const = -20 # if heli-mode cannot be used, use low rpm throttle instead  
 
         # instantiation 
         self.actu = selemod.Actuator(pin_esc=self.pin_esc, pin_servo_1=self.pin_servo_1, 
