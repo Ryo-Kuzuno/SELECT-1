@@ -62,7 +62,7 @@ class Resilience:
         self.throttle1 = 15 
         self.throttle2 = 15 
         self.throttle3 = 10
-        self.throttle_slowdown = 40
+        self.throttle_slowdown = 10
         self.throttle_const = 40 # if heli-mode cannot be used, use low rpm throttle instead  
 
         # instantiation 
