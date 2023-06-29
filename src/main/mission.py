@@ -59,7 +59,7 @@ class Resilience:
         self.middle_lim1 = 0.3 * self.DISTANCE
         self.middle_lim2 = 0.5 * self.DISTANCE
         self.upper_lim = 0.85 * self.DISTANCE 
-        self.throttle1 = 5 
+        self.throttle1 = 10 
         self.throttle2 = 55 
         self.throttle3 = 50
         self.throttle_slowdown = 40
