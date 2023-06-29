@@ -61,7 +61,7 @@ class Resilience:
         self.upper_lim = 0.85 * self.DISTANCE 
         self.throttle1 = 25 
         self.throttle2 = 20 
-        self.throttle3 = 20
+        self.throttle3 = 15
         self.throttle_slowdown = 15
         self.throttle_const = -20 # if heli-mode cannot be used, use low rpm throttle instead  
 
@@ -159,8 +159,8 @@ class Resilience:
                 #gpio.cleanup()
                 #sys.exit()
                 print("climber near the goal")
-                self.actu.new_throttle(self.throttle_slowdown)
-                sleep(5)
+                #self.actu.new_throttle(self.throttle_slowdown)
+                #sleep(5)
                 self.actu.stop_esc(self.current_throttle)
                 self.actu.brakeoff()
                 self.mode = 1 
