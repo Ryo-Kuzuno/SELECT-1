@@ -33,7 +33,6 @@ class Actuator:
         self.freq_esc = freq_esc
         self.freq_servo  = freq_servo
         self.pin_servo_1 = pin_servo_1
-        self.constup_throttle = constup_throttle
         self.brakeon_duty = brakeon_duty
         self.brakeoff_duty = brakeoff_duty
         self.decrease_rate = 0.1
@@ -290,18 +289,6 @@ class Actuator:
         self.esc.ChangeDutyCycle(duty)
         sleep(10)
 
-    def constup(self):
-        """
-        this method changes current duty to new duty given by constup_throttle and go up at a constant speed
-        """
-        if self.constup_throttle == None:
-            print("constup_throttle has no value.")
-            self.end()
-            gpio.cleanup()
-            sys.exit()
-
-        self.new_throttle(self.constup_throttle)
-
     # servo
     def new_brake(self, duty):
         self.ser_1.ChangeDutyCycle(duty)
@@ -363,7 +350,6 @@ class Actuator:
         # del self.pin_servo_2
         del self.throttle_a0
         del self.throttle_a1
-        del self.constup_throttle
         del self.brakeon_duty
         del self.brakeoff_duty
         self.new_duty(0)
