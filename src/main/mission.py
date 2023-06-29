@@ -59,11 +59,11 @@ class Resilience:
         self.middle_lim1 = 0.3 * self.DISTANCE
         self.middle_lim2 = 0.5 * self.DISTANCE
         self.upper_lim = 0.85 * self.DISTANCE 
-        self.throttle1 = 15 
-        self.throttle2 = 15 
+        self.throttle1 = 45 
+        self.throttle2 = 30 
         self.throttle3 = 10
         self.throttle_slowdown = 10
-        self.throttle_const = 40 # if heli-mode cannot be used, use low rpm throttle instead  
+        self.throttle_const = -10 # if heli-mode cannot be used, use low rpm throttle instead  
 
         # instantiation 
         self.actu = selemod.Actuator(pin_esc=self.pin_esc, pin_servo_1=self.pin_servo_1, 
@@ -150,20 +150,20 @@ class Resilience:
             #### esc stop sequence ####
             # if near the goal, stop esc (this area is above safe zone, so immediately set throttle 0 once the climber reach this area)
             if self.upper_lim <= self.pos: 
-                print("Finish! Brake is turned on.")
-                self.actu.stop_esc(self.current_throttle)
-                self.actu.check_brake()
-                gpio.cleanup()
-                sys.exit()
-                #print("climber near the goal")
-                #self.actu.new_throttle(self.throttle_slowdown)
-                #sleep(2)
+                #print("Finish! Brake is turned on.")
                 #self.actu.stop_esc(self.current_throttle)
-                #self.actu.brakeoff()
-                #self.mode = 1 
-                #print("switching to mode 1")
-                #sleep(2)
-                #self.actu.brakeon()
+                #self.actu.check_brake()
+                #gpio.cleanup()
+                #sys.exit()
+                print("climber near the goal")
+                self.actu.new_throttle(self.throttle_slowdown)
+                sleep(2)
+                self.actu.stop_esc(self.current_throttle)
+                self.actu.brakeoff()
+                self.mode = 1 
+                print("switching to mode 1")
+                sleep(2)
+                self.actu.brakeon()
 
             # Proximity switch (E2S) stop 
             e2s_0_flag, e2s_1_flag = e2s_flag
