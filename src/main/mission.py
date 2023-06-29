@@ -160,10 +160,11 @@ class Resilience:
                 #sys.exit()
                 print("climber near the goal")
                 self.actu.new_throttle(self.throttle_slowdown)
-                sleep(2)
+                sleep(5)
                 self.actu.stop_esc(self.current_throttle)
                 self.actu.brakeoff()
                 self.mode = 1 
+                self.maxReachHeight = self.DISTANCE
                 print("switching to mode 1")
                 sleep(2)
                 self.actu.brakeon()
@@ -234,7 +235,7 @@ class Resilience:
                 print("mode D" )
                 self.current_throttle = self.throttle_const
 
-            if (self.pos)-(self.DISTANCE*self.REDUCE_RATE) == 0: 
+            if (self.pos) < self.maxReachHeight*self.REDUCE_RATE: 
                 print("turning off motor and activate brake for 5sec")
                 self.actu.brakeoff() ####brake first or stop esc?####
                 self.actu.stop_esc(self.current_throttle)
