@@ -5,7 +5,7 @@
 import sys 
 sys.path.append('../')
 import selemod
-import time
+from time import sleep, time
 
 # instantiate actuator class 
 pin_esc = 18
@@ -38,6 +38,7 @@ if yesorno == 'n':
             throttle = float(throttle)
             print("throttle:", throttle)
             actu.new_throttle(throttle)
+            sleep(5)
             actu.stop_esc(throttle)
             actu.brakeon()
             print("End test.")
