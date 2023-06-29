@@ -41,13 +41,13 @@ class Actuator:
         self.brakeoff_duty = brakeoff_duty
         self.decrease_rate = 0.1
 
-        #self.max_pulsewidth = 1970
-        #self.min_pulsewidth = 1030
-        #self.mid_pulsewidth = 1500
-
-        self.max_pulsewidth = 2000
-        self.min_pulsewidth = 1000
+        self.max_pulsewidth = 1970
+        self.min_pulsewidth = 1030
         self.mid_pulsewidth = 1500
+
+        #self.max_pulsewidth = 2000
+        #self.min_pulsewidth = 1000
+        #self.mid_pulsewidth = 1500
 
         pulseperiod = 1/self.freq_esc
         self.max_duty = self.max_pulsewidth / 10**6 / pulseperiod * 100
