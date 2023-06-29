@@ -60,10 +60,10 @@ class Resilience:
         self.middle_lim2 = 0.5 * self.DISTANCE
         self.upper_lim = 0.85 * self.DISTANCE 
         self.throttle1 = 25 
-        self.throttle2 = 22 
-        self.throttle3 = 20
+        self.throttle2 = 23 
+        self.throttle3 = 22
         self.throttle_slowdown = 15
-        self.throttle_const = -20 # if heli-mode cannot be used, use low rpm throttle instead  
+        self.throttle_const = -22 # if heli-mode cannot be used, use low rpm throttle instead  
 
         # instantiation 
         self.actu = selemod.Actuator(pin_esc=self.pin_esc, pin_servo_1=self.pin_servo_1, 
@@ -303,7 +303,6 @@ class Resilience:
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
                 self.actu.stop_esc(self.current_throttle)
                 self.actu.brakeoff()
-                self.actu.check_brake()
                 gpio.cleanup()
                 sys.exit()
 
