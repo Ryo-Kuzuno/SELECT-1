@@ -29,6 +29,7 @@ class Actuator:
         """
 
         # setup properties
+        self.esc_type = 'bidir'
         self.pin_esc = pin_esc
         self.freq_esc = freq_esc
         self.freq_servo  = freq_servo
@@ -71,6 +72,51 @@ class Actuator:
         self.ser_1.start(self.brakeon_duty)
 
     def calibrate_esc(self):
+        if self.esc_type == 'onedir':
+            print("Calibrating one-directional esc")
+            self.max_pulsewidth = 1970
+            self.min_pulsewidth = 1030
+            self.mid_pulsewidth = 1500
+
+            self.calibrate_esc_onedir()
+        elif self.esc_type == 'bidir':
+            print("Calibrating bi-directional esc")
+            self.max_pulsewidth = 2000
+            self.min_pulsewidth = 1000
+            self.mid_pulsewidth = 1500
+
+            self.calibrate_esc_bidir()
+        else
+            print("incorrect key of esc_type")
+
+            
+
+
+    def calibrate_esc_onedir(self):
+        """
+        ESC needs calibration when connecting transmitter to ESC for the first time.
+        """ 
+
+        print("initializing esc, remove battery...")
+        
+
+        self.esc.ChangeDutyCycle(self.max_duty)
+        print("\nsetting esc max pulse\n")
+        print("Maximum duty ratio: %.1f\n" %self.max_duty)
+
+        print("connect battery. Press Enter after the beep。")
+        inp = input()
+        if inp == '':
+            self.esc.ChangeDutyCycle(self.min_duty)
+            print("Minimum duty ratio: %.1f\n" %self.min_duty)
+
+            print("Is the motor silent? y/n")
+            yesorno = input()
+            if yesorno == 'y':
+                print("Calibration has completed.")
+                sleep(1)
+
+    def calibrate_esc_bidir(self):
         """
         ESC needs calibration when connecting transmitter to ESC for the first time.
         """ 
