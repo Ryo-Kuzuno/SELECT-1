@@ -164,7 +164,7 @@ class Resilience:
                 self.actu.stop_esc(self.current_throttle)
                 self.actu.brakeoff()
                 self.mode = 1 
-                self.maxReachHeight = self.DISTANCE
+                self.maxReachHeight = self.pos
                 print("switching to mode 1")
                 sleep(10)
                 self.actu.brakeon()
@@ -173,55 +173,23 @@ class Resilience:
             e2s_0_flag, e2s_1_flag = e2s_flag
             if e2s_0_flag==1: 
             # Top E2S
-                self.actu.stop_esc(self.current_throttle)
-                print("top e2s ON")
-                print("Final position status : count {},  position {}".format(self.count, self.pos))
-                print("turning off actuator")
-                self.actu.brakeoff()
-                self.actu.check_brake()
-                gpio.cleanup()
-                sys.exit()
-            else: 
-                pass
+                txt = "top e2s ON"
+                self._stop_sequence(txt)
             
             if e2s_1_flag==1:
             # Bottom E2S
-                self.actu.stop_esc(self.current_throttle)
-                print("bottom e2s ON")
-                print("Final position status : count {},  position {}".format(self.count, self.pos))
-                print("turning off actuator")
-                self.actu.brakeoff()
-                self.actu.check_brake()
-                gpio.cleanup()
-                sys.exit()
-            else: 
-                pass
+                txt = "bottom e2s ON"
+                self._stop_sequence(txt)
             
             # Remote switch (TWILITE) stop
             if rmstop_flag == 0: 
-                self.actu.stop_esc(self.current_throttle)
-                print("remote stop switch ON")
-                print("Final position status : count {},  position {}".format(self.count, self.pos))
-                print("turning off actuator")
-                self.actu.brakeoff()
-                self.actu.check_brake()
-                gpio.cleanup()
-                sys.exit()
-            else: 
-                pass
+                txt = "remote stop switch ON"
+                self._stop_sequence(txt)
             
             # Emergency switch stop
             if em_flag == 1: 
-                self.actu.stop_esc(self.current_throttle)
-                print("emergency switch ON")
-                print("Final position status : count {},  position {}".format(self.count, self.pos))
-                print("turning off actuator")
-                self.actu.brakeoff()
-                self.actu.check_brake()
-                gpio.cleanup()
-                sys.exit()
-            else: 
-                pass
+                txt = "emergency switch ON"
+                self._stop_sequence(txt)
             
 
         # once self.mode is set to 1 (climb down), never change self.mode to 0 (for safety reason)
@@ -236,13 +204,18 @@ class Resilience:
                 self.current_throttle = self.throttle_const
 
             if self.pos < self.maxReachHeight*self.REDUCE_RATE: 
-                print("turning off motor and activate brake for 5sec")
-                self.actu.stop_esc(self.current_throttle)
-                self.actu.brakeoff() ####brake first or stop esc?####
-                sleep(5)
-                gpio.cleanup()
-                sys.exit()
-                
+                txt = "turning off motor and activate brake for 5sec"
+                self._stop_sequence(txt)
+
+    def _stop_sequence(self,txt):
+        print(txt)
+        self.actu.stop_esc(self.current_throttle)
+        print("turning off actuator")
+        print("Final position status : count {},  position {}".format(self.count, self.pos))
+        self.actu.brakeoff()
+        #self.actu.check_brake()
+        gpio.cleanup()
+        sys.exit()                
         
     def brake(self, servo_flag):
          """ 
@@ -271,6 +244,7 @@ class Resilience:
         self.rotary_rate = self.ls7366r.readRotaryRate()
         self.pos = self.ENC_COEFFICIENT * self.rotary_rate
         print("Position: {:.2f}" .format(self.pos))
+
     def _bme280(self): 
         press, temp, humid = self.bme280.read()
         return (press, temp, humid)
@@ -278,7 +252,6 @@ class Resilience:
     def _sht31(self): 
         temp, humid = sht31.read()
         return (temp, humid)
-
 
     def run(self):
         # main program cc
@@ -298,40 +271,6 @@ class Resilience:
                 self._encoder()
                 sleep(0.1)      # Less than 0.1 s might cause sampling error
             except KeyboardInterrupt: 
-                print("Aborting the sequence")
-                print("Final position status : count {},  position {}".format(self.count, self.pos))
                 self.actu.stop_esc(self.current_throttle)
-                self.actu.brakeoff()
-                gpio.cleanup()
-                sys.exit()
-
-    def backward(self, count, pos, dist, reduce_rate): 
-        # override DISTANCE & REDUCE_RATE up to the climber's position 
-        self.DISTANCE = dist 
-        self.REDUCE_RATE = reduce_rate 
-        self.count = count 
-        self.pos = pos 
-
-        #enc_thread = threading.Thread(target=self._encoder)
-        #enc_thread.start()
-        #enc_thread.setDaemon(True)
-
-        # forcely set self.mode = 1 to switch to backward run 
-        self.mode = 1 
-
-        while True: 
-            try: 
-                em_flag = self._em_sw()
-                e2s_flag = self._e2s()
-                rmstop_flag = self._remote_stop()
-                self.motor(e2s_flag, em_flag, rmstop_flag) #since self.mode = 1, start sequence from backward running
-                self._encoder()
-                sleep(0.1)      # Less than 0.1 s might cause sampling error
-            except KeyboardInterrupt: 
-                print("Aborting the sequence")
-                print("Final position status : count {},  position {}".format(self.count, self.pos))
-                self.actu.stop_esc(self.current_throttle)
-                self.actu.brakeoff()
-                self.actu.check_brake()
-                gpio.cleanup()
-                sys.exit()
+                txt = "Aborting the sequence"
+                self._stop_sequence(txt)
