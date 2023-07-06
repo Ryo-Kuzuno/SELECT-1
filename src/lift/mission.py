@@ -66,6 +66,7 @@ class Resilience:
         self.ascend_flag  = 0
         self.descend_flag = 0
         self.low_lim_flag = 0
+        self.stop_flag    = 0
 
 
 
@@ -142,22 +143,25 @@ class Resilience:
         ## Climber motion decision based on obtained position from encoder
         # if near the goal, stop esc (this area is above safe zone, so immediately set throttle 0 once the climber reach this area)
        
-        if self.pos >= self.upper_lim * self.SAFETY_RATIO:
-            print("The climber is almost the upper limit.")
-            self.actu.stop_esc(self.current_throttle)
-            self.actu.brakeoff()
-            sleep(5)
-            self.actu.brakeon()
-        elif (self.pos <= self.lower_lim) and (self.low_lim_flag == 1): 
-            print("The climber is almost the lower limit.")
-            self.actu.stop_esc(self.current_throttle)
-            self.actu.brakeoff()
-            sleep(5)
-            self.low_lim_flag == 0
+        if self.stop_flag == 0:
+            if self.pos >= self.upper_lim * self.SAFETY_RATIO:
+                print("The climber is almost the upper limit.")
+                self.actu.stop_esc(self.current_throttle)
+                self.stop_flag    = 1
+                self.actu.brakeoff()
+                sleep(5)
+                self.actu.brakeon()
+            elif (self.pos <= self.lower_lim) and (self.low_lim_flag == 1): 
+                print("The climber is almost the lower limit.")
+                self.actu.stop_esc(self.current_throttle)
+                self.stop_flag    = 1
+                self.actu.brakeoff()
+                sleep(5)
+                self.low_lim_flag == 0
 
-        elif (self.pos >= self.lower_lim) and (self.low_lim_flag == 0): 
-            print("Lower limit flag 1")
-            self.low_lim_flag == 1
+            elif (self.pos >= self.lower_lim) and (self.low_lim_flag == 0): 
+                print("Lower limit flag 1")
+                self.low_lim_flag == 1
 
 
         ## Climber motion decision based on event flag
@@ -204,6 +208,7 @@ class Resilience:
             elif (self.ascend_flag == 0) and (self.descend_flag == 1):
                 print("descending stop")
                 self.actu.stop_esc(self.current_throttle)
+                self.stop_flag    = 1
                 self.descend_flag = 0
 
             elif self.ascend_flag == 1:
@@ -223,6 +228,7 @@ class Resilience:
             elif (self.ascend_flag == 1) and (self.descend_flag == 0):
                 print("ascending stop")
                 self.actu.stop_esc(self.current_throttle)
+                self.stop_flag    = 1
                 self.ascend_flag = 0
 
             elif self.descend_flag == 1:
