@@ -64,7 +64,7 @@ class Actuator:
             self.min_duty = self.min_pulsewidth / 10**6 / pulseperiod * 100
             self.mid_duty = self.mid_pulsewidth / 10**6 / pulseperiod * 100
 
-            self.throttle_a0 = 7.5      # duty vs throttle bias
+            self.throttle_a0 = 7.6      # duty vs throttle bias
             self.throttle_a1 = 0.015    # duty vs throttle weight (this was estiamted from linear regression)
             self.default_duty   = self.mid_duty
         else:

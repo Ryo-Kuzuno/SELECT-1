@@ -188,9 +188,11 @@ class Resilience:
         ## Climber motion decision based on key input 
         if operation_key == 'a':
             if (self.ascend_flag == 0) and (self.descend_flag == 0):
+                print("\n")
                 yesorno = input("Ascend ? y/n\n")
                 
                 if yesorno =='y':
+                   print("\n")
                    print("Ascend")
                    self.target_throttle = self.throttle_up
                    self.ascend_flag = 1
@@ -210,9 +212,11 @@ class Resilience:
         
         if operation_key == 'd':
             if (self.ascend_flag == 0) and (self.descend_flag == 0):
+                print("\n")
                 yesorno = input("Descend ? y/n\n")
 
                 if yesorno =='y':
+                    print("\n")
                     print("Descend")
                     self.target_throttle = self.throttle_down
                     self.descend_flag = 1
