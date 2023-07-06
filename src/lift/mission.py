@@ -193,7 +193,7 @@ class Resilience:
                 if yesorno =='y':
                    print("\n")
                    print("Ascend")
-                   self.actu.new_throttle(self.throttle_down)
+                   self.actu.new_throttle(self.throttle_up)
                    self.ascend_flag = 1
 
                 elif yesorno =='n':
