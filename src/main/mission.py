@@ -59,11 +59,11 @@ class Resilience:
         self.middle_lim1 = 0.6 * self.DISTANCE
         self.middle_lim2 = 0.8 * self.DISTANCE
         self.upper_lim = 0.9 * self.DISTANCE 
-        self.throttle_A = 30 
-        self.throttle_B = 25 
+        self.throttle_A = 35 
+        self.throttle_B = 27
         self.throttle_C = 25
-        self.throttle_slowdown = 15
-        self.throttle_const = -20 # if heli-mode cannot be used, use low rpm throttle instead  
+        self.throttle_slowdown = 20
+        self.throttle_const = -15 # if heli-mode cannot be used, use low rpm throttle instead  
 
         # instantiation 
         self.actu = selemod.Actuator(pin_esc=self.pin_esc, pin_servo_1=self.pin_servo_1, 
@@ -197,7 +197,7 @@ class Resilience:
         # while self.mode = 1, continue heli-mode -> change to normal mode and set throttle 0 
         elif self.mode == 1: 
             #swith to heli-mode every 5% of DISTANCE
-            print("climber in mode 1:")
+            print("climber in mode 1-D:")
             txt = "mode D"
             if self.current_throttle != self.throttle_const: 
                 self.actu.new_throttle(self.throttle_const)
