@@ -62,6 +62,7 @@ class Resilience:
         self.throttle_up        =  27
         self.throttle_down      = -22
         self.throttle_default   =   0
+        self.target_throttle    = self.throttle_default
 
         self.ascend_flag  = 0
         self.descend_flag = 0
@@ -141,6 +142,7 @@ class Resilience:
 
         ## Climber motion decision based on obtained position from encoder
         # if near the goal, stop esc (this area is above safe zone, so immediately set throttle 0 once the climber reach this area)
+       
         if self.pos >= self.upper_lim * self.SAFETY_RATIO:
             print("The climber is almost the upper limit.")
             self.actu.stop_esc(self.current_throttle)
@@ -190,8 +192,7 @@ class Resilience:
                 
                 if yesorno =='y':
                    print("Ascend")
-                   self.actu.new_throttle(self.throttle_up)
-                   self.current_throttle = self.throttle_up
+                   self.target_throttle = self.throttle_up
                    self.ascend_flag = 1
 
                 elif yesorno =='n':
@@ -213,8 +214,7 @@ class Resilience:
 
                 if yesorno =='y':
                     print("Descend")
-                    self.actu.new_throttle(self.throttle_down)
-                    self.current_throttle = self.throttle_down
+                    self.target_throttle = self.throttle_down
                     self.descend_flag = 1
     
             elif (self.ascend_flag == 1) and (self.descend_flag == 0):
@@ -224,6 +224,12 @@ class Resilience:
 
             elif self.descend_flag == 1:
                 print("Already descending")
+
+
+        if self.current_throttle != self.target_throttle: #change throttle value only if current throttle and target throttle is different
+            self.actu.new_throttle(self.target_throttle)
+            self.current_throttle = self.target_throttle
+            print("mode change: ", txt)
 
 
     def brake(self, servo_flag):
