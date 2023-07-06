@@ -59,11 +59,11 @@ class Resilience:
         self.middle_lim1 = 0.6 * self.DISTANCE
         self.middle_lim2 = 0.8 * self.DISTANCE
         self.upper_lim = 0.9 * self.DISTANCE 
-        self.throttle1 = 25 
-        self.throttle2 = 23 
-        self.throttle3 = 22
-        self.throttle_slowdown = 15
-        self.throttle_const = -22 # if heli-mode cannot be used, use low rpm throttle instead  
+        self.throttle_A = 30 
+        self.throttle_B = 35
+        self.throttle_C = 25
+        self.throttle_slowdown = 22
+        self.throttle_D = -10 # if heli-mode cannot be used, use low rpm throttle instead  
 
         # instantiation 
         self.actu = selemod.Actuator(pin_esc=self.pin_esc, pin_servo_1=self.pin_servo_1, 
@@ -137,18 +137,19 @@ class Resilience:
 
         if self.mode == 0:
             if self.lower_lim <= self.pos < self.middle_lim1:
-                print("mode A") 
-                self.target_throttle = self.throttle1
+                txt = "mode A"
+                self.target_throttle = self.throttle_A
             elif self.middle_lim1 <= self.pos < self.middle_lim2:
-                print("mode B") 
-                self.target_throttle = self.throttle2
+                txt = "mode B"
+                self.target_throttle = self.throttle_B
             elif self.middle_lim2 <= self.pos < self.upper_lim:
-                print("mode C") 
-                self.target_throttle = self.throttle3
+                txt = "mode C"
+                self.target_throttle = self.throttle_C
 
             if self.current_throttle != self.target_throttle: #change throttle value only if current throttle and target throttle is different
                 self.actu.new_throttle(self.target_throttle)
                 self.current_throttle = self.target_throttle
+                print("mode change: ", txt)
             
             #### esc stop sequence ####
             # if near the goal, stop esc (this area is above safe zone, so immediately set throttle 0 once the climber reach this area)
@@ -196,12 +197,13 @@ class Resilience:
         # while self.mode = 1, continue heli-mode -> change to normal mode and set throttle 0 
         elif self.mode == 1: 
             #swith to heli-mode every 5% of DISTANCE
-            print("climber in mode 1:")
-            print("mode D" )
-            if self.current_throttle != self.throttle_const: 
-                self.actu.new_throttle(self.throttle_const)
-                print("setting throttle : %.1f\n" %self.throttle_const)
-                self.current_throttle = self.throttle_const
+            if self.current_throttle != self.throttle_D: 
+                self.actu.new_throttle(self.throttle_D)
+                txt = "mode D"
+                print("mode change: ", txt)
+                print("setting throttle : %.1f\n" %self.throttle_D)
+                self.current_throttle = self.throttle_D
+
 
             if self.pos < self.maxReachHeight*self.REDUCE_RATE: 
                 txt = "turning off motor and activate brake for 5sec"
