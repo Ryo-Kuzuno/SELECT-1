@@ -3,12 +3,12 @@ import pygame
 import sys
 
 pygame.init()    # Pygameを初期化
-screen = pygame.display.set_mode((400, 330))    # 画面を作成
+#screen = pygame.display.set_mode((400, 330))    # 画面を作成
 pygame.display.set_caption("keyboard event")    # タイトルを作成
 
 
 while True:
-    screen.fill((0, 0, 0)) 
+    #screen.fill((0, 0, 0)) 
     for event in pygame.event.get():
         if event.type == QUIT:
             pygame.quit()
