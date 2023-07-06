@@ -304,7 +304,7 @@ class Resilience:
 
 
 
-    def getkey():
+    def getkey(self):
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
 
