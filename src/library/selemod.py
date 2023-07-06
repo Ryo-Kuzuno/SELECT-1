@@ -11,8 +11,7 @@ import spidev
 class Actuator:
 
     def __init__(self, pin_esc:int, pin_servo_1:int, freq_esc:int, freq_servo:int,
-                brakeon_duty:float, brakeoff_duty:float,
-                throttle_a0:float=None, throttle_a1:float=None, constup_throttle:float=None):
+                brakeon_duty:float, brakeoff_duty:float):
 
         """
         pin_esc: pin number in BCM(The number of xx of GPIOxx) connected with a ESC's signal line
@@ -29,24 +28,48 @@ class Actuator:
         """
 
         # setup properties
+        self.esc_type = 'bidir'
         self.pin_esc = pin_esc
         self.freq_esc = freq_esc
         self.freq_servo  = freq_servo
         self.pin_servo_1 = pin_servo_1
-        self.throttle_a0 = throttle_a0
-        self.throttle_a1 = throttle_a1
-        self.constup_throttle = constup_throttle
         self.brakeon_duty = brakeon_duty
         self.brakeoff_duty = brakeoff_duty
         self.decrease_rate = 0.1
 
-        self.max_pulsewidth = 1970
-        self.min_pulsewidth = 1030
-        self.mid_pulsewidth = 1500
-        pulseperiod = 1/self.freq_esc
-        self.max_duty = self.max_pulsewidth / 10**6 / pulseperiod * 100
-        self.min_duty = self.min_pulsewidth / 10**6 / pulseperiod * 100
-        self.mid_duty = self.mid_pulsewidth / 10**6 / pulseperiod * 100
+        if self.esc_type == 'onedir':
+            self.max_pulsewidth = 1970
+            self.min_pulsewidth = 1030
+            self.mid_pulsewidth = 1500
+            print("One-directional esc")
+
+            pulseperiod = 1/self.freq_esc
+            self.max_duty = self.max_pulsewidth / 10**6 / pulseperiod * 100
+            self.min_duty = self.min_pulsewidth / 10**6 / pulseperiod * 100
+            self.mid_duty = self.mid_pulsewidth / 10**6 / pulseperiod * 100
+
+            self.throttle_a0 = 5.15     # duty vs throttle weight (this was estiamted from linear regression)
+            self.throttle_a1 = 0.047    # duty vs throttle bias
+            self.default_duty   = self.min_duty
+
+
+        elif self.esc_type == 'bidir':
+            self.max_pulsewidth = 2000
+            self.min_pulsewidth = 1000
+            self.mid_pulsewidth = 1500
+            print("Bi-directional esc")
+
+            pulseperiod = 1/self.freq_esc
+            self.max_duty = self.max_pulsewidth / 10**6 / pulseperiod * 100
+            self.min_duty = self.min_pulsewidth / 10**6 / pulseperiod * 100
+            self.mid_duty = self.mid_pulsewidth / 10**6 / pulseperiod * 100
+
+            self.throttle_a0 = 7.5      # duty vs throttle weight (this was estiamted from linear regression)
+            self.throttle_a1 = 0.015    # duty vs throttle bias
+            self.default_duty   = self.mid_duty
+        else:
+            print("incorrect key of esc_type")
+            sys.exit()
 
 
         """
@@ -64,7 +87,7 @@ class Actuator:
         self.ser_1 = gpio.PWM(self.pin_servo_1, freq_servo)
         self.esc.start(0)
         self.ser_1.start(self.brakeon_duty)
-
+    
     def calibrate_esc(self):
         """
         ESC needs calibration when connecting transmitter to ESC for the first time.
@@ -77,26 +100,27 @@ class Actuator:
         print("\nsetting esc max pulse\n")
         print("Maximum duty ratio: %.1f\n" %self.max_duty)
 
-        print("connect battery. Press Enter after the beep。")
+        print("connect battery. Press Enter after the beep.")
         inp = input()
         if inp == '':
-            self.esc.ChangeDutyCycle(self.min_duty)
-            print("Minimum duty ratio: %.1f\n" %self.min_duty)
+            self.esc.ChangeDutyCycle(self.default_duty)
+            print("Default duty ratio: %.1f\n" %self.default_duty)
 
             print("Is the motor silent? y/n")
             yesorno = input()
             if yesorno == 'y':
                 print("Calibration has completed.")
                 sleep(1)
-    
-    def set_min_throttle(self):
+
+
+    def set_default_throttle(self):
         """
         This function is used before you start rotating motor. 
         Setting minimum throttle is needed before sending specified PWM pulse.
         You need to confirm whether the set minimum throttle is valid by executing calibrate_esc().
         """
 
-        duty_initial = self.min_duty
+        duty_initial = self.default_duty
         print("duty:", duty_initial)
         self.esc.start(duty_initial)
         sleep(2)
@@ -116,7 +140,7 @@ class Actuator:
         duty_step = 0.5
         upper_limit = 0.9*self.max_duty
         duty_count = round((upper_limit-duty_initial)/duty_step)
-        self.set_min_throttle()
+        self.set_default_throttle()
 
 
 
@@ -161,7 +185,7 @@ class Actuator:
         print("Duty ratio decreasing.")
         # duty = self.throttle_a0 + self.throttle_a1*throttle
         duty = self.throttle_a0 + self.throttle_a1 * throttle
-        delta = self.decrease_rate*(duty-self.min_duty)
+        delta = self.decrease_rate*(duty-self.default_duty)
         for i in range(round(1/self.decrease_rate)):
             duty = duty-delta
             print("Duty:", duty)
@@ -269,18 +293,6 @@ class Actuator:
         self.esc.ChangeDutyCycle(duty)
         sleep(10)
 
-    def constup(self):
-        """
-        this method changes current duty to new duty given by constup_throttle and go up at a constant speed
-        """
-        if self.constup_throttle == None:
-            print("constup_throttle has no value.")
-            self.end()
-            gpio.cleanup()
-            sys.exit()
-
-        self.new_throttle(self.constup_throttle)
-
     # servo
     def new_brake(self, duty):
         self.ser_1.ChangeDutyCycle(duty)
@@ -342,7 +354,6 @@ class Actuator:
         # del self.pin_servo_2
         del self.throttle_a0
         del self.throttle_a1
-        del self.constup_throttle
         del self.brakeon_duty
         del self.brakeoff_duty
         self.new_duty(0)

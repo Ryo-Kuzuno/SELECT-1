@@ -52,26 +52,23 @@ class Resilience:
         self.freq_esc = 50 
         self.freq_servo = 50 
         self.brakeon_duty = 8.72
-        self.brakeoff_duty = 4.85 
-        self.throttle_a0 = 5.15 # duty vs throttle weight (this was estiamted from linear regression)
-        self.throttle_a1 = 0.047 # duty vs throttle bias
+        self.brakeoff_duty = 4.85
         self.current_throttle = 0
         self.target_throttle = 0  
         self.lower_lim = 0 
-        self.middle_lim1 = 0.3 * self.DISTANCE
-        self.middle_lim2 = 0.5 * self.DISTANCE
-        self.upper_lim = 0.85 * self.DISTANCE 
-        self.throttle1 = 55 
-        self.throttle2 = 55 
-        self.throttle3 = 50
-        self.throttle_slowdown = 40
-        self.throttle_const = 40 # if heli-mode cannot be used, use low rpm throttle instead  
+        self.middle_lim1 = 0.6 * self.DISTANCE
+        self.middle_lim2 = 0.8 * self.DISTANCE
+        self.upper_lim = 0.9 * self.DISTANCE 
+        self.throttle1 = 25 
+        self.throttle2 = 23 
+        self.throttle3 = 22
+        self.throttle_slowdown = 15
+        self.throttle_const = -22 # if heli-mode cannot be used, use low rpm throttle instead  
 
         # instantiation 
         self.actu = selemod.Actuator(pin_esc=self.pin_esc, pin_servo_1=self.pin_servo_1, 
                         freq_esc=self.freq_esc, freq_servo=self.freq_servo, 
-                        brakeoff_duty=self.brakeoff_duty, brakeon_duty=self.brakeon_duty, 
-                        throttle_a0=self.throttle_a0, throttle_a1=self.throttle_a1) 
+                        brakeoff_duty=self.brakeoff_duty, brakeon_duty=self.brakeon_duty) 
         self.e2s = E2S(self.pin_e2s_top, self.pin_e2s_bottom) 
         self.em_sw = EM_SW(self.pin_em_sw) 
         self.twilite_remote = TWILITE_REMOTE(self.pin_remote_actuate, self.pin_remote_stop) 
@@ -97,7 +94,7 @@ class Resilience:
         #calibration setup 
         self.actu.brakeon() #servo brake off b4 climbing 
         print("Brake is ready.\n")
-        self.actu.set_min_throttle()       
+        self.actu.set_default_throttle()       
         
         print("Sensor checking...")
         em_flag     = 1
@@ -139,11 +136,14 @@ class Resilience:
         # throttle value of each domain is initialized in construction 
 
         if self.mode == 0:
-            if self.lower_lim <= self.pos < self.middle_lim1: 
+            if self.lower_lim <= self.pos < self.middle_lim1:
+                print("mode A") 
                 self.target_throttle = self.throttle1
-            elif self.middle_lim1 <= self.pos < self.middle_lim2: 
+            elif self.middle_lim1 <= self.pos < self.middle_lim2:
+                print("mode B") 
                 self.target_throttle = self.throttle2
-            elif self.middle_lim2 <= self.pos < self.upper_lim: 
+            elif self.middle_lim2 <= self.pos < self.upper_lim:
+                print("mode C") 
                 self.target_throttle = self.throttle3
 
             if self.current_throttle != self.target_throttle: #change throttle value only if current throttle and target throttle is different
@@ -153,20 +153,21 @@ class Resilience:
             #### esc stop sequence ####
             # if near the goal, stop esc (this area is above safe zone, so immediately set throttle 0 once the climber reach this area)
             if self.upper_lim <= self.pos: 
-                print("Finish! Brake is turned on.")
-                self.actu.stop_esc(self.current_throttle)
-                self.actu.check_brake()
-                gpio.cleanup()
-                sys.exit()
-                #print("climber near the goal")
-                #self.actu.new_throttle(self.throttle_slowdown)
-                #sleep(2)
+                #print("Finish! Brake is turned on.")
                 #self.actu.stop_esc(self.current_throttle)
-                #self.actu.brakeoff()
-                #self.mode = 1 
-                #print("switching to mode 1")
-                #sleep(2)
-                #self.actu.brakeon()
+                #self.actu.check_brake()
+                #gpio.cleanup()
+                #sys.exit()
+                print("climber near the goal")
+                #self.actu.new_throttle(self.throttle_slowdown)
+                #sleep(5)
+                self.actu.stop_esc(self.current_throttle)
+                self.actu.brakeoff()
+                self.mode = 1 
+                self.maxReachHeight = self.DISTANCE
+                print("switching to mode 1")
+                sleep(10)
+                self.actu.brakeon()
 
             # Proximity switch (E2S) stop 
             e2s_0_flag, e2s_1_flag = e2s_flag
@@ -227,18 +228,21 @@ class Resilience:
         # while self.mode = 1, continue heli-mode -> change to normal mode and set throttle 0 
         elif self.mode == 1: 
             #swith to heli-mode every 5% of DISTANCE
+            print("climber in mode 1:")
+            print("mode D" )
             if self.current_throttle != self.throttle_const: 
-                print("climber in mode 1:")
-                print("setting throttle 40%")
                 self.actu.new_throttle(self.throttle_const)
+                print("setting throttle : %.1f\n" %self.throttle_const)
                 self.current_throttle = self.throttle_const
 
-            if int(self.pos)%(self.DISTANCE*self.REDUCE_RATE) == 0: 
+            if self.pos < self.maxReachHeight*self.REDUCE_RATE: 
                 print("turning off motor and activate brake for 5sec")
-                self.actu.brakeoff() ####brake first or stop esc?####
                 self.actu.stop_esc(self.current_throttle)
+                self.actu.brakeoff() ####brake first or stop esc?####
                 sleep(5)
-                self.actu.check_brake()
+                gpio.cleanup()
+                sys.exit()
+                
         
     def brake(self, servo_flag):
          """ 
@@ -298,7 +302,6 @@ class Resilience:
                 print("Final position status : count {},  position {}".format(self.count, self.pos))
                 self.actu.stop_esc(self.current_throttle)
                 self.actu.brakeoff()
-                self.actu.check_brake()
                 gpio.cleanup()
                 sys.exit()
 
