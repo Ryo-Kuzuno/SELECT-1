@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../')
+sys.path.append('../library')
 from time import sleep, time
 import spidev 
 from selemod import LS7366R
