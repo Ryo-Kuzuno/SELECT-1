@@ -27,12 +27,12 @@ while True:
     if key == 'q':
         break
     elif key == 'Up':
-        # 上矢印キーの処理
+        print(key)
     elif key == 'Down':
-        # 下矢印キーの処理
+        print(key)
     elif key == 'Right':
-        # 右矢印キーの処理
+        print(key)
     elif key == 'Left':
-        # 左矢印キーの処理
+        print(key)
     else:
-        # その他のキー入力の処理
+        print(key)
