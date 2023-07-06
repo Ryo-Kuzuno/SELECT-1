@@ -283,7 +283,6 @@ class Resilience:
         #enc_thread = threading.Thread(target=self._encoder)
         #enc_thread.start()
         #enc_thread.setDaemon(True)
-        operation_key = 0
         print("Ascending: 'a', Descending: 'd'")
 
         while True: 
@@ -294,6 +293,7 @@ class Resilience:
                 
                 operation_key = self.getkey()
                 self.motor(e2s_flag, em_flag, rmstop_flag, operation_key)
+                operation_key = 0
                 self._encoder()
                 sleep(0.1)      # Less than 0.1 s might cause sampling error
                 
