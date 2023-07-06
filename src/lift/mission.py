@@ -295,7 +295,7 @@ class Resilience:
                 self.motor(e2s_flag, em_flag, rmstop_flag, operation_key)
                 operation_key = 0
                 self._encoder()
-                sleep(0.1)      # Less than 0.1 s might cause sampling error
+                sleep(0.3)      # Less than 0.1 s might cause sampling error
                 
             except KeyboardInterrupt: 
                 self.actu.stop_esc(self.current_throttle)
