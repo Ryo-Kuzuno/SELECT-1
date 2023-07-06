@@ -5,7 +5,9 @@ import spidev
 from time import sleep
 import selemod
 from math import pi
-import msvcrt
+
+import tty
+import termios
 
 from selemod import Actuator, Bme280, Sht31, E2S, Encoder, LS7366R, TWILITE_REMOTE, EM_SW
 
@@ -290,17 +292,26 @@ class Resilience:
                 e2s_flag = self._e2s()
                 rmstop_flag = self._remote_stop()
                 
+                operation_key = self.getkey()
                 self.motor(e2s_flag, em_flag, rmstop_flag, operation_key)
                 self._encoder()
                 sleep(0.1)      # Less than 0.1 s might cause sampling error
-
-                if msvcrt.kbhit():          # if some key is input,
-                    kb = msvcrt.getch()     # obtain the input value
-                    print(kb)
-                    operation_key = kb.decode()
-                
                 
             except KeyboardInterrupt: 
                 self.actu.stop_esc(self.current_throttle)
                 txt = "Aborting the sequence"
                 self._stop_sequence(txt)
+
+
+
+    def getkey():
+        fd = sys.stdin.fileno()
+        old_settings = termios.tcgetattr(fd)
+
+        try:
+            tty.setcbreak(fd)
+            key = sys.stdin.read(1)
+        finally:
+            termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
+
+        return key
