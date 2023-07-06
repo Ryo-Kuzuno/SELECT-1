@@ -59,11 +59,11 @@ class Resilience:
         self.middle_lim1 = 0.6 * self.DISTANCE
         self.middle_lim2 = 0.8 * self.DISTANCE
         self.upper_lim = 0.9 * self.DISTANCE 
-        self.throttle1 = 30 
-        self.throttle2 = 25 
-        self.throttle3 = 22
+        self.throttle_A = 30 
+        self.throttle_B = 25 
+        self.throttle_C = 25
         self.throttle_slowdown = 15
-        self.throttle_const = -22 # if heli-mode cannot be used, use low rpm throttle instead  
+        self.throttle_const = -20 # if heli-mode cannot be used, use low rpm throttle instead  
 
         # instantiation 
         self.actu = selemod.Actuator(pin_esc=self.pin_esc, pin_servo_1=self.pin_servo_1, 
@@ -138,13 +138,13 @@ class Resilience:
         if self.mode == 0:
             if self.lower_lim <= self.pos < self.middle_lim1:
                 txt = "mode A"
-                self.target_throttle = self.throttle1
+                self.target_throttle = self.throttle_A
             elif self.middle_lim1 <= self.pos < self.middle_lim2:
                 txt = "mode B"
-                self.target_throttle = self.throttle2
+                self.target_throttle = self.throttle_B
             elif self.middle_lim2 <= self.pos < self.upper_lim:
                 txt = "mode C"
-                self.target_throttle = self.throttle3
+                self.target_throttle = self.throttle_C
 
             if self.current_throttle != self.target_throttle: #change throttle value only if current throttle and target throttle is different
                 self.actu.new_throttle(self.target_throttle)
@@ -198,11 +198,13 @@ class Resilience:
         elif self.mode == 1: 
             #swith to heli-mode every 5% of DISTANCE
             print("climber in mode 1:")
-            print("mode D" )
+            txt = "mode D"
             if self.current_throttle != self.throttle_const: 
                 self.actu.new_throttle(self.throttle_const)
+                print("mode change: ", txt)
                 print("setting throttle : %.1f\n" %self.throttle_const)
                 self.current_throttle = self.throttle_const
+
 
             if self.pos < self.maxReachHeight*self.REDUCE_RATE: 
                 txt = "turning off motor and activate brake for 5sec"
