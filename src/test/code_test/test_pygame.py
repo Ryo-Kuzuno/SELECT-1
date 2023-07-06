@@ -21,4 +21,4 @@ while True:
             
             else:
                 print("押されたキー = " + pygame.key.name(event.key))
-        pygame.display.update()
+        #pygame.display.update()
