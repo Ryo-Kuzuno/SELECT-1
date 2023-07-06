@@ -8,8 +8,8 @@ def main():
         if r:
             # キー入力の処理
             key = sys.stdin.read(1)
-            if key == 'q':
-                break
+            if key == 'w':
+                print("input: w")
 
 if __name__ == '__main__':
     main()
