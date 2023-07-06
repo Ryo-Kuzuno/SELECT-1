@@ -1,7 +1,7 @@
 import evdev
 
 #検知したいデバイスのevent番号を書いてください
-device = evdev.InputDevice('/dev/input/event1')
+device = evdev.InputDevice('/dev/input/event0')
 
 for event in device.read_loop():
     if event.type == evdev.ecodes.EV_KEY:
