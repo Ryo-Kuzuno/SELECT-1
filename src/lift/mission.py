@@ -65,6 +65,7 @@ class Resilience:
 
         self.ascend_flag  = 0
         self.descend_flag = 0
+        self.low_lim_flag = 1
 
 
 
@@ -147,7 +148,7 @@ class Resilience:
             sleep(5)
             self.actu.brakeon()
         elif (self.pos <= self.lower_lim) and (self.low_lim_flag == 1): 
-            print("The climber is almotst the lower limit.")
+            print("The climber is already below the lower limit.")
             self.actu.stop_esc(self.current_throttle)
             self.actu.brakeoff()
             sleep(5)
