@@ -20,5 +20,5 @@ while True:
                 sys.exit()
             
             else:
-                print("押されたキー = " + pygame.key.name(event.key),"\n")
+                print("\n押されたキー = " + pygame.key.name(event.key))
         #pygame.display.update()
