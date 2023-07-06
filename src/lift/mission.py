@@ -59,8 +59,8 @@ class Resilience:
         self.brakeoff_duty = 4.85
 
         self.current_throttle   =   0
-        self.throttle_up        =  27
-        self.throttle_down      = -22
+        self.throttle_up        =  30
+        self.throttle_down      = -15
         self.throttle_default   =   0
         self.target_throttle    = self.throttle_default
 
@@ -229,7 +229,6 @@ class Resilience:
         if self.current_throttle != self.target_throttle: #change throttle value only if current throttle and target throttle is different
             self.actu.new_throttle(self.target_throttle)
             self.current_throttle = self.target_throttle
-            print("mode change: ", txt)
 
 
     def brake(self, servo_flag):
