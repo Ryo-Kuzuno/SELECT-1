@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../')
+sys.path.append('../../')
 import selemod
 import time 
 import RPi.GPIO as gpio 

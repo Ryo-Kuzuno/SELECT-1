@@ -3,8 +3,7 @@
 
 #import dependencies 
 import sys 
-sys.path.append('../main')
-sys.path.append('../')
+sys.path.append('../../')
 from selemod import Actuator
 
 # instantiate actuator class 

@@ -1,6 +1,6 @@
 import sys
 from tkinter import dialog
-sys.path.append('../')
+sys.path.append('../../')
 from selemod import Encoder
 from time import sleep, time
 import time
