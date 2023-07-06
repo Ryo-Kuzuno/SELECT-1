@@ -56,7 +56,7 @@ class Actuator:
         elif self.esc_type == 'bidir':
             self.max_pulsewidth = 1970
             self.min_pulsewidth = 1000
-            self.mid_pulsewidth = 1510
+            self.mid_pulsewidth = 1520
             print("Bi-directional esc")
 
             pulseperiod = 1/self.freq_esc
