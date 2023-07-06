@@ -54,9 +54,9 @@ class Actuator:
 
 
         elif self.esc_type == 'bidir':
-            self.max_pulsewidth = 1970
+            self.max_pulsewidth = 2000
             self.min_pulsewidth = 1000
-            self.mid_pulsewidth = 1530
+            self.mid_pulsewidth = 1500
             print("Bi-directional esc")
 
             pulseperiod = 1/self.freq_esc
@@ -188,9 +188,8 @@ class Actuator:
         delta = self.decrease_rate*(duty-self.default_duty)
         for i in range(round(1/self.decrease_rate)):
             duty = duty-delta
-            print("Duty:", duty)
+            #print("Duty:", duty)
             self.esc.ChangeDutyCycle(duty)
-            # sleep(1)
             sleep(.01)
         print("Motor stop")
 
