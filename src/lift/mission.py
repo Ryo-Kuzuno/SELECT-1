@@ -59,8 +59,8 @@ class Resilience:
         self.brakeoff_duty = 4.85
 
         self.current_throttle   =   0
-        self.throttle_up        =  20
-        self.throttle_down      = -20
+        self.throttle_up        =  22
+        self.throttle_down      = -22
         self.throttle_default   =   0
 
         self.ascend_flag  = 0
