@@ -16,6 +16,4 @@ def getkey():
 
 while True:
     key = getkey()
-    if key == 'q':
-        print("input: q")
-    # キー入力の処理
+    print("input:", key)
