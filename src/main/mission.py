@@ -59,10 +59,10 @@ class Resilience:
         self.middle_lim1 = 0.6 * self.DISTANCE
         self.middle_lim2 = 0.8 * self.DISTANCE
         self.upper_lim = 0.9 * self.DISTANCE 
-        self.throttle_A = 33 
-        self.throttle_B = 30
+        self.throttle_A = 30 
+        self.throttle_B = 35
         self.throttle_C = 25
-        self.throttle_slowdown = 20
+        self.throttle_slowdown = 22
         self.throttle_D = -10 # if heli-mode cannot be used, use low rpm throttle instead  
 
         # instantiation 
@@ -197,10 +197,9 @@ class Resilience:
         # while self.mode = 1, continue heli-mode -> change to normal mode and set throttle 0 
         elif self.mode == 1: 
             #swith to heli-mode every 5% of DISTANCE
-            print("climber in mode 1-D:")
-            txt = "mode D"
             if self.current_throttle != self.throttle_D: 
                 self.actu.new_throttle(self.throttle_D)
+                txt = "mode D"
                 print("mode change: ", txt)
                 print("setting throttle : %.1f\n" %self.throttle_D)
                 self.current_throttle = self.throttle_D
