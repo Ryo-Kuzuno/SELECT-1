@@ -62,7 +62,6 @@ class Resilience:
         self.throttle_up        =  22
         self.throttle_down      = -22
         self.throttle_default   =   0
-        self.target_throttle    = self.throttle_default
 
         self.ascend_flag  = 0
         self.descend_flag = 0
@@ -194,7 +193,7 @@ class Resilience:
                 if yesorno =='y':
                    print("\n")
                    print("Ascend")
-                   self.target_throttle = self.throttle_up
+                   self.actu.new_throttle(self.throttle_down)
                    self.ascend_flag = 1
 
                 elif yesorno =='n':
@@ -218,7 +217,7 @@ class Resilience:
                 if yesorno =='y':
                     print("\n")
                     print("Descend")
-                    self.target_throttle = self.throttle_down
+                    self.actu.new_throttle(self.throttle_down)
                     self.descend_flag = 1
     
             elif (self.ascend_flag == 1) and (self.descend_flag == 0):
@@ -228,11 +227,6 @@ class Resilience:
 
             elif self.descend_flag == 1:
                 print("Already descending")
-
-
-        if self.current_throttle != self.target_throttle: #change throttle value only if current throttle and target throttle is different
-            self.actu.new_throttle(self.target_throttle)
-            self.current_throttle = self.target_throttle
 
 
     def brake(self, servo_flag):
