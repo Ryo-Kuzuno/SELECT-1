@@ -137,18 +137,19 @@ class Resilience:
 
         if self.mode == 0:
             if self.lower_lim <= self.pos < self.middle_lim1:
-                print("mode A") 
+                txt = "mode A"
                 self.target_throttle = self.throttle1
             elif self.middle_lim1 <= self.pos < self.middle_lim2:
-                print("mode B") 
+                txt = "mode B"
                 self.target_throttle = self.throttle2
             elif self.middle_lim2 <= self.pos < self.upper_lim:
-                print("mode C") 
+                txt = "mode C"
                 self.target_throttle = self.throttle3
 
             if self.current_throttle != self.target_throttle: #change throttle value only if current throttle and target throttle is different
                 self.actu.new_throttle(self.target_throttle)
                 self.current_throttle = self.target_throttle
+                print("mode change: ", txt)
             
             #### esc stop sequence ####
             # if near the goal, stop esc (this area is above safe zone, so immediately set throttle 0 once the climber reach this area)
