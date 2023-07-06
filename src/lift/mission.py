@@ -138,10 +138,6 @@ class Resilience:
         # if so, add position domain like middle_lim1, middle_lim2, middle_lim3, ... 
         # throttle value of each domain is initialized in construction 
 
-        if self.current_throttle != self.target_throttle: #change throttle value only if current throttle and target throttle is different
-            self.actu.new_throttle(self.target_throttle)
-            self.current_throttle = self.target_throttle
-        
         ## Climber motion decision based on obtained position from encoder
         # if near the goal, stop esc (this area is above safe zone, so immediately set throttle 0 once the climber reach this area)
         if self.pos >= self.upper_lim * self.SAFETY_RATIO:
