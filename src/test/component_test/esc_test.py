@@ -3,7 +3,7 @@
 
 #import dependencies 
 import sys 
-sys.path.append('../../')
+sys.path.append('../library/')
 import selemod
 from time import sleep, time
 

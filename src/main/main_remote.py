@@ -1,5 +1,5 @@
 import sys
-sys.path.append('../../')
+sys.path.append('../library/')
 from time import sleep
 from mission import Resilience
 
