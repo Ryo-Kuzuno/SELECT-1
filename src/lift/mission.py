@@ -3,14 +3,14 @@ import RPi.GPIO as gpio
 import smbus
 import spidev
 from time import sleep
-import selemod
+import liftmod
 from math import pi
 
 import tty
 import termios
 import select
 
-from selemod import Actuator, Bme280, Sht31, E2S, Encoder, LS7366R, TWILITE_REMOTE, EM_SW
+from liftmod import Actuator, Bme280, Sht31, E2S, Encoder, LS7366R, TWILITE_REMOTE, EM_SW
 
 import threading # if unable to import, use "pip3 install thread6 in terminal"
 
@@ -68,11 +68,12 @@ class Resilience:
         self.descend_flag = 0
         self.low_lim_flag = 0
         self.stop_flag    = 0
+        self.txt_space    = ' ' * 30
 
 
 
         # instantiation 
-        self.actu = selemod.Actuator(pin_esc=self.pin_esc, pin_servo_1=self.pin_servo_1, 
+        self.actu = liftmod.Actuator(pin_esc=self.pin_esc, pin_servo_1=self.pin_servo_1, 
                         freq_esc=self.freq_esc, freq_servo=self.freq_servo, 
                         brakeoff_duty=self.brakeoff_duty, brakeon_duty=self.brakeon_duty) 
         self.e2s = E2S(self.pin_e2s_top, self.pin_e2s_bottom) 
@@ -273,7 +274,7 @@ class Resilience:
         '''based on encoder count value, compute climber's position'''
         self.rotary_rate = self.ls7366r.readRotaryRate()
         self.pos = self.ENC_COEFFICIENT * self.rotary_rate
-        print("Position: {:.2f}" .format(self.pos))
+        print(self.txt_space,"Position: {:.2f}" .format(self.pos))
 
     def _bme280(self): 
         press, temp, humid = self.bme280.read()
@@ -303,7 +304,6 @@ class Resilience:
                 operation_key = 0
                 self._encoder()
                 sleep(0.1)      # Less than 0.1 s might cause sampling error
-                print("11111111111111111111111")
             except KeyboardInterrupt: 
                 self.actu.stop_esc(self.current_throttle)
                 txt = "Aborting the sequence"
