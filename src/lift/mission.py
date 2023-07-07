@@ -302,7 +302,7 @@ class Resilience:
                 operation_key = 0
                 self._encoder()
                 sleep(0.1)      # Less than 0.1 s might cause sampling error
-                
+                print("11111111111111111111111")
             except KeyboardInterrupt: 
                 self.actu.stop_esc(self.current_throttle)
                 txt = "Aborting the sequence"
