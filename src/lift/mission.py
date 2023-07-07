@@ -34,6 +34,7 @@ class Resilience:
         self.SAFETY_RATIO = 0.8
         self.upper_lim = UPPER_LIMIT
         self.lower_lim = LOWER_LIMIT
+        self.margin = 3
         #self.RADIUS, self.HEIGHT = SPEC["radius"], SPEC["height"], SPEC["gear_ratio_enc2roller"]
         self.ENC_COEFFICIENT = - 2 * pi * SPEC["radius"] * SPEC["gear_ratio_enc2roller"]
         self.bme_is_use, self.sht_is_use, self.counter_is_use = sensor["bme"], sensor["sht"], sensor["counter"]
@@ -152,17 +153,18 @@ class Resilience:
                 self.stop_flag    = 1
                 self.ascend_flag = 0
                 self.actu.brakeoff()
-                sleep(5)
+                sleep(3)
                 self.actu.brakeon()
             elif (self.pos <= self.lower_lim) and (self.low_lim_stop_flag == 1): 
                 print("The climber is almost the lower limit.")
                 self.actu.stop_esc(self.current_throttle)
                 self.stop_flag    = 1
                 self.actu.brakeoff()
-                sleep(5)
                 self.low_lim_stop_flag = 0
+                self.descend_flag = 0
+                sleep(3)
 
-            elif (self.pos >= self.lower_lim) and (self.low_lim_stop_flag == 0): 
+            elif (self.pos >= self.lower_limb + self.margin) and (self.low_lim_stop_flag == 0): 
                 print("Lower limit flag 1")
                 self.low_lim_stop_flag = 1
 
