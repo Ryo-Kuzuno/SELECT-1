@@ -32,9 +32,9 @@ class Resilience:
 
         # physical info about the climber 
         self.SAFETY_RATIO = 0.8
+        self.MARGIN = 3
         self.upper_lim = UPPER_LIMIT
         self.lower_lim = LOWER_LIMIT
-        self.margin = 3
         #self.RADIUS, self.HEIGHT = SPEC["radius"], SPEC["height"], SPEC["gear_ratio_enc2roller"]
         self.ENC_COEFFICIENT = - 2 * pi * SPEC["radius"] * SPEC["gear_ratio_enc2roller"]
         self.bme_is_use, self.sht_is_use, self.counter_is_use = sensor["bme"], sensor["sht"], sensor["counter"]
@@ -164,7 +164,7 @@ class Resilience:
                 self.descend_flag = 0
                 sleep(3)
 
-            elif (self.pos >= self.lower_limb + self.margin) and (self.low_lim_stop_flag == 0): 
+            elif (self.pos >= self.lower_lim + self.MARGIN) and (self.low_lim_stop_flag == 0): 
                 print("Lower limit flag 1")
                 self.low_lim_stop_flag = 1
 
