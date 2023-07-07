@@ -8,6 +8,7 @@ from math import pi
 
 import tty
 import termios
+import select
 
 from selemod import Actuator, Bme280, Sht31, E2S, Encoder, LS7366R, TWILITE_REMOTE, EM_SW
 
