@@ -201,6 +201,7 @@ class Resilience:
                    print("Ascend")
                    self.actu.new_throttle(self.throttle_up)
                    self.ascend_flag = 1
+                   self.stop_flag   = 0
 
                 elif yesorno =='n':
                    print("Test aborting.")
@@ -226,6 +227,7 @@ class Resilience:
                     print("Descend")
                     self.actu.new_throttle(self.throttle_down)
                     self.descend_flag = 1
+                    self.stop_flag   = 0
     
             elif (self.ascend_flag == 1) and (self.descend_flag == 0):
                 print("ascending stop")
