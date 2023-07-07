@@ -16,12 +16,12 @@ import threading # if unable to import, use "pip3 install thread6 in terminal"
 
 
 class Resilience: 
-    def __init__(self, UPPER_LIMIT:int, LOWER_LIMIT: int, SPEC:dict, sensor:dict): 
+    def __init__(self, UPPER_LIMIT:float, LOWER_LIMIT: float, SPEC:dict, sensor:dict): 
         """
         Args
         --------------------------------------------------------
-        UPPER_LIMIT (int) : maximum altitude of climber
-        LOWER_LIMIT (int) : minimun altitude of climber
+        UPPER_LIMIT (float) : maximum altitude of climber
+        LOWER_LIMIT (float) : minimun altitude of climber
         SPEC(dict) : {"radius":radius(int), "height":height(int)}
         sensor(dict) : {"bme" : bool, "sht" : bool, "counter" : bool}
 
@@ -162,9 +162,8 @@ class Resilience:
                 self.low_lim_stop_flag == 0
 
             elif (self.pos >= self.lower_lim) and (self.low_lim_stop_flag == 0): 
-                if self.low_lim_stop_flag == 0:
-                    print("Lower limit flag 1")
-                    self.low_lim_stop_flag == 1
+                print("Lower limit flag 1")
+                self.low_lim_stop_flag == 1
 
 
         ## Climber motion decision based on event flag
