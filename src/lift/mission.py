@@ -160,11 +160,11 @@ class Resilience:
                 self.stop_flag    = 1
                 self.actu.brakeoff()
                 sleep(5)
-                self.low_lim_stop_flag == 0
+                self.low_lim_stop_flag = 0
 
             elif (self.pos >= self.lower_lim) and (self.low_lim_stop_flag == 0): 
                 print("Lower limit flag 1")
-                self.low_lim_stop_flag == 1
+                self.low_lim_stop_flag = 1
 
 
         ## Climber motion decision based on event flag
