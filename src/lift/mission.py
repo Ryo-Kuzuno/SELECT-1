@@ -310,14 +310,17 @@ class Resilience:
 
 
 
-    def getkey(self):
+    def getkey(self,timeout=0.1):
         fd = sys.stdin.fileno()
         old_settings = termios.tcgetattr(fd)
 
         try:
-            tty.setcbreak(fd)
-            key = sys.stdin.read(1)
+            tty.setraw(fd)
+            r, _, _ = select.select([sys.stdin], [], [], timeout)
+            if r:
+                key = sys.stdin.read(1)
+                return key
+            else:
+                return 0
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, old_settings)
-
-        return key
