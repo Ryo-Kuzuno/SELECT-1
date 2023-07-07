@@ -32,7 +32,7 @@ class Resilience:
 
         # physical info about the climber 
         self.SAFETY_RATIO = 0.8
-        self.MARGIN = 3
+        self.MARGIN = 4
         self.upper_lim = UPPER_LIMIT
         self.lower_lim = LOWER_LIMIT
         #self.RADIUS, self.HEIGHT = SPEC["radius"], SPEC["height"], SPEC["gear_ratio_enc2roller"]
@@ -147,7 +147,7 @@ class Resilience:
         # if near the goal, stop esc (this area is above safe zone, so immediately set throttle 0 once the climber reach this area)
        
         if self.stop_flag == 0:
-            if (self.pos >= self.upper_lim * self.SAFETY_RATIO) and (self.ascend_flag == 1):
+            if (self.pos >= self.upper_lim * self.SAFETY_RATIO - self.MARGIN) and (self.ascend_flag == 1):
                 print("The climber is almost the upper limit.")
                 self.actu.stop_esc(self.current_throttle)
                 self.stop_flag    = 1
