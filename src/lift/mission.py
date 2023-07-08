@@ -221,7 +221,7 @@ class Resilience:
                 print("Already ascending")
         
         if operation_key == 'd':
-            if (self.ascend_flag == 0) and (self.descend_flag == 0):
+            if (self.ascend_flag == 0) and (self.descend_flag == 0) and (self.low_lim_stop_flag == 0):
                 print("\n")
                 yesorno = input("Descend ? y/n\n")
 
