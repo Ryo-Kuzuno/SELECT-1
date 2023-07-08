@@ -147,7 +147,7 @@ class Resilience:
         # if near the goal, stop esc (this area is above safe zone, so immediately set throttle 0 once the climber reach this area)
        
         if self.stop_flag == 0:
-            if (self.pos >= self.upper_lim * self.SAFETY_RATIO - self.MARGIN) and (self.ascend_flag == 1):
+            if (self.pos >= self.upper_lim - self.MARGIN) and (self.ascend_flag == 1):
                 print("The climber is almost the upper limit.")
                 self.actu.stop_esc(self.current_throttle)
                 self.stop_flag    = 1
@@ -155,7 +155,7 @@ class Resilience:
                 self.actu.brakeoff()
                 sleep(3)
                 self.actu.brakeon()
-            elif (self.pos <= self.lower_lim) and (self.low_lim_stop_flag == 1): 
+            elif (self.pos <= self.lower_lim + self.MARGIN) and (self.low_lim_stop_flag == 1): 
                 print("The climber is almost the lower limit.")
                 self.actu.stop_esc(self.current_throttle)
                 self.stop_flag    = 1
@@ -164,7 +164,7 @@ class Resilience:
                 self.descend_flag = 0
                 sleep(3)
 
-            elif (self.pos >= self.lower_lim + self.MARGIN) and (self.low_lim_stop_flag == 0): 
+            elif (self.pos >= self.lower_lim) and (self.low_lim_stop_flag == 0): 
                 print("Lower limit flag 1")
                 self.low_lim_stop_flag = 1
 
