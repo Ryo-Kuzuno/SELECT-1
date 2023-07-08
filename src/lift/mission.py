@@ -231,6 +231,8 @@ class Resilience:
                     self.actu.new_throttle(self.throttle_down)
                     self.descend_flag = 1
                     self.stop_flag   = 0
+            elif (self.ascend_flag == 0) and (self.descend_flag == 0) and (self.low_lim_stop_flag == 0):
+                print("This climeber is almost at the lower limit.")
     
             elif (self.ascend_flag == 1) and (self.descend_flag == 0):
                 print("ascending stop")
