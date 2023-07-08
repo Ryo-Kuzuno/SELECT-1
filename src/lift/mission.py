@@ -164,7 +164,7 @@ class Resilience:
                 self.descend_flag = 0
                 sleep(3)
 
-            elif (self.pos >= self.lower_lim) and (self.low_lim_stop_flag == 0): 
+            elif (self.pos >= self.lower_lim + self.MARGIN) and (self.low_lim_stop_flag == 0): 
                 print("Lower limit flag 1")
                 self.low_lim_stop_flag = 1
 
